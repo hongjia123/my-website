@@ -1,0 +1,16 @@
+.left_nav{
+    cursor: pointer;
+}
+.left_active{
+    color:#46bd87;
+    position: relative;
+    &::before{
+        content:"";
+        display: block;
+        width: 5px;
+        height: 100%;
+        background-color: #46bd87;
+        position: absolute;
+        left: -30px;
+    }
+}
