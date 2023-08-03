@@ -1,0 +1,31 @@
+.ml-split-container {
+  width: 100%;
+  height: 800px;
+  display: flex;
+  display: -webkit-flex;
+
+  .left-title-nav {
+    position: relative;
+    min-width: 200px;
+    max-width: 1000px;
+    height: 100%;
+    padding: 10px 30px;
+    transition: width 0.08s linear;
+    resize: horizontal;
+    .split-line {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2px;
+      height: 100%;
+      background-color: var(--ml-borderB-color);
+      cursor: col-resize;
+    }
+  }
+
+  .right-content-container {
+    width: calc(100% - 120px);
+    height: 100%;
+    padding: 10px;
+  }
+}
