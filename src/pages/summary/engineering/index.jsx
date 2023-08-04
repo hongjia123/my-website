@@ -41,4 +41,8 @@ const JsAdvance = {
     );
   },
 };
+<<<<<<< HEAD
 export default JsAdvance;
+=======
+export default Hp;
+>>>>>>> 41de2e6143352c5eb9f593411a5276e684b9cbe8
