@@ -12,19 +12,15 @@ const Optimization = {
       },
       {
         id: 2,
-        name: "2. http优化",
+        name: "2. js性能优化",
       },
       {
         id: 3,
-        name: "3. js性能优化",
+        name: "3. 流程优化",
       },
       {
         id: 4,
-        name: "4. 流程优化",
-      },
-      {
-        id: 5,
-        name: "5. 构建性能优化",
+        name: "4. 构建性能优化",
       },
     ];
     const component = {
@@ -41,8 +37,4 @@ const Optimization = {
     );
   },
 };
-<<<<<<< HEAD
 export default Optimization;
-=======
-export default Hp;
->>>>>>> 41de2e6143352c5eb9f593411a5276e684b9cbe8

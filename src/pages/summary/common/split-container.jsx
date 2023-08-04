@@ -35,18 +35,17 @@ const SplitContainer = {
     console.log(props);
     onMounted(() => {});
     return () => (
-      <div class="hp-container">
-        <Split
-          v-slots={{
-            Left,
-            Content: (props) => {
-              return h(props.rightContent);
-            },
-          }}
-          rightContent={props.rightContent[Index.value]}
-          leftContent={props.leftContent}
-        />
-      </div>
+      <Split
+        v-slots={{
+          Left,
+          Content: (props) => {
+            console.log(h(props.rightContent), props.rightContent);
+            return h(props.rightContent);
+          },
+        }}
+        rightContent={props.rightContent[Index.value]}
+        leftContent={props.leftContent}
+      />
     );
   },
 };

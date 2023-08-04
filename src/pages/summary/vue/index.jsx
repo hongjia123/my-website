@@ -24,7 +24,7 @@ const VueFrame = {
       },
       {
         id: 5,
-        name: "5. vue中的jsx",
+        name: "5. vue动态组件",
       },
     ];
     const component = {

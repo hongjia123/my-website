@@ -9,33 +9,28 @@ const Split = {
   setup(props, { slots }) {
     const isResizing = ref(false);
     onMounted(() => {
-      document
-        .querySelector(".split-line")
-        .addEventListener("mousedown", function ($event) {
-          isResizing.value = true;
-        });
-      document.documentElement.addEventListener("mousemove", function (e) {
+      const left = document.querySelector('.left-title-nav');
+      const splitline = document.querySelector('.split-line');
+      const middle = document.querySelector('.middle-content-container');
+      const root = document.documentElement;
+      document.querySelector('.hp-container').style.setProperty('--left-width', getComputedStyle(left).width);
+      splitline.addEventListener("mousedown", function ($event) {
+        isResizing.value = true;
+      });
+      root.addEventListener("mousemove", function (e) {
+        const maxClientX = e.clientX > 1000 ? 1000 : e.clientX;
         if (isResizing.value) {
           requestAnimationFrame(() => {
-            document.querySelector(
-              ".right-content-container"
-            ).style.width = `auto`;
-            document.querySelector(".right-content-container").style.cursor =
-              "col-resize";
-            document.querySelector(
-              ".left-title-nav"
-            ).style.width = `${e.clientX}px`;
-            document.querySelector(".left-title-nav").style.cursor =
-              "col-resize";
+            middle.style.width = `calc(100% - ${maxClientX}px - 200px)`;
+            middle.style.cursor = "col-resize";
+            left.style.width = `${maxClientX}px`;
+            left.style.cursor = "col-resize";
           });
         }
       });
-      document.documentElement.addEventListener("mouseup", function (e) {
-        document.querySelector(
-          ".right-content-container"
-        ).style.width = `calc(100% - ${e.clientX}px)`;
-        document.querySelector(".right-content-container").style.cursor = "";
-        document.querySelector(".left-title-nav").style.cursor = "";
+      root.addEventListener("mouseup", function (e) {
+        middle.style.cursor = "";
+        left.style.cursor = "";
         isResizing.value = false;
       });
     });
@@ -46,7 +41,8 @@ const Split = {
           {slots.Left(props)}
           <div class="split-line"></div>
         </div>
-        <div class="right-content-container">{slots.Content(props)}</div>
+        <div class="middle-content-container">{slots.Content(props)}</div>
+        <div class="right-container"></div>
       </div>
     );
   },

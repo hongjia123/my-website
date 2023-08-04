@@ -23,9 +23,18 @@
     }
   }
 
-  .right-content-container {
-    width: calc(100% - 120px);
+  .middle-content-container {
+    width: calc(100% - var(--left-width) - 200px);
     height: 100%;
     padding: 10px;
+    // margin-right: 120px;
+  }
+  .right-container{
+    position: fixed;
+    right: 0;
+    min-width: 200px;
+    max-width: 200px;
+    height: 100%;
+    border-left: 1px solid var(--ml-borderB-color);
   }
 }
