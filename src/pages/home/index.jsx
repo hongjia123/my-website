@@ -1,5 +1,5 @@
-import gifIcon from './img/javascript.gif';
-import './css/index.less';
+import gifIcon from "./img/javascript.gif";
+import "./css/index.less";
 const Home = {
   setup(props, { attrs, emit, slots }) {
     return () => (

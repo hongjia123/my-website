@@ -1,5 +1,5 @@
-import Split from '@components/ml-split';
-import { reactive, ref, h, onMounted } from 'vue';
+import Split from "@components/ml-split";
+import { reactive, ref, h, onMounted } from "vue";
 
 const Left = (props) => {
   const leftList = reactive(props.leftContent);
@@ -10,7 +10,7 @@ const Left = (props) => {
         return (
           <div>
             <div
-              class={['left_nav', { left_active: index == Index.value - 1 }]}
+              class={["left_nav", { left_active: index == Index.value - 1 }]}
               onClick={() => (Index.value = list.id)}
             >
               <strong>
@@ -30,7 +30,7 @@ const Left = (props) => {
 
 const Index = ref(1);
 const SplitContainer = {
-  props: ['leftContent', 'rightContent'],
+  props: ["leftContent", "rightContent"],
   setup(props) {
     console.log(props);
     onMounted(() => {});

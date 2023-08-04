@@ -1,72 +1,69 @@
 // 定义开关的不同状态
 class darkState {
-    constructor(switchButton) {
-        this.SwitchButton = switchButton;
-        this.varMap = {
-            '--ml-bg-color': '--ml-dark-bg-color',
-            '--ml-text-color': '--ml-dark-text-color',
-            '--ml-borderB-color': '--ml-dark-borderB-color',
-            '--ml-principle-bg-color': '--ml-principle-dark-bg-color',
-        };
-    }
+  constructor(switchButton) {
+    this.SwitchButton = switchButton;
+    this.varMap = {
+      "--ml-bg-color": "--ml-dark-bg-color",
+      "--ml-text-color": "--ml-dark-text-color",
+      "--ml-borderB-color": "--ml-dark-borderB-color",
+      "--ml-principle-bg-color": "--ml-principle-dark-bg-color",
+    };
+  }
 
-    // 打开当前状态
-    turnOn() {
-        document.querySelector('.ml-switch-check').style.background = '#000';
-        document.querySelector('.ml-switch').style.background = '#292727';
-        document.querySelector('.ml-switch-appearance-moon').style.opacity = '1';
-        document.querySelector('.ml-switch-appearance-moon').style.fill = '#fff';
-        document.querySelector('.ml-switch-check').style.transform =
-            'translate(18px)';
-        this.SwitchButton.setState(this);
-    }
-    // 关闭当前状态
-    turnOff() {
-        document.querySelector('.ml-switch-appearance-moon').style.opacity = '0';
-        this.SwitchButton.lightState.turnOn();
-    }
-
-
+  // 打开当前状态
+  turnOn() {
+    document.querySelector(".ml-switch-check").style.background = "#000";
+    document.querySelector(".ml-switch").style.background = "#292727";
+    document.querySelector(".ml-switch-appearance-moon").style.opacity = "1";
+    document.querySelector(".ml-switch-appearance-moon").style.fill = "#fff";
+    document.querySelector(".ml-switch-check").style.transform =
+      "translate(18px)";
+    this.SwitchButton.setState(this);
+  }
+  // 关闭当前状态
+  turnOff() {
+    document.querySelector(".ml-switch-appearance-moon").style.opacity = "0";
+    this.SwitchButton.lightState.turnOn();
+  }
 }
 class lightState {
-    constructor(switchButton) {
-        this.SwitchButton = switchButton;
-        this.varMap = {
-            '--ml-bg-color': '--ml-light-bg-color',
-            '--ml-text-color': '--ml-light-text-color',
-            '--ml-borderB-color': '--ml-light-borderB-color',
-            '--ml-principle-bg-color': '--ml-principle-light-bg-color',
-        };
-    }
-    // 打开当前状态
+  constructor(switchButton) {
+    this.SwitchButton = switchButton;
+    this.varMap = {
+      "--ml-bg-color": "--ml-light-bg-color",
+      "--ml-text-color": "--ml-light-text-color",
+      "--ml-borderB-color": "--ml-light-borderB-color",
+      "--ml-principle-bg-color": "--ml-principle-light-bg-color",
+    };
+  }
+  // 打开当前状态
 
-    turnOn() {
-        document.querySelector('.ml-switch-check').style.background = '#fff';
-        document.querySelector('.ml-switch-appearance-sun').style.opacity = '1';
-        document.querySelector('.ml-switch').style.background = '#f1f1f1';
-        document.querySelector('.ml-switch-appearance-sun').style.fill = '#000';
-        document.querySelector('.ml-switch-check').style.fill = '#f1f1f1';
-        document.querySelector('.ml-switch-check').style.transform =
-            'translate(0px)';
-        this.SwitchButton.setState(this);
-    }
-    // 关闭当前状态
-    turnOff() {
-        document.querySelector('.ml-switch-appearance-sun').style.opacity = '0';
-        this.SwitchButton.darkState.turnOn();
+  turnOn() {
+    document.querySelector(".ml-switch-check").style.background = "#fff";
+    document.querySelector(".ml-switch-appearance-sun").style.opacity = "1";
+    document.querySelector(".ml-switch").style.background = "#f1f1f1";
+    document.querySelector(".ml-switch-appearance-sun").style.fill = "#000";
+    document.querySelector(".ml-switch-check").style.fill = "#f1f1f1";
+    document.querySelector(".ml-switch-check").style.transform =
+      "translate(0px)";
+    this.SwitchButton.setState(this);
+  }
+  // 关闭当前状态
+  turnOff() {
+    document.querySelector(".ml-switch-appearance-sun").style.opacity = "0";
+    this.SwitchButton.darkState.turnOn();
+  }
 
-    }
-
-    // 改变状态
+  // 改变状态
 }
 
 // 创建通用开关类
 class SwitchButton {
-    constructor(option) {
-        this.el = option.el; //开关挂载的元素选择器
-        this.lightState = new lightState(this);
-        this.darkState = new darkState(this);
-        this.template = `
+  constructor(option) {
+    this.el = option.el; //开关挂载的元素选择器
+    this.lightState = new lightState(this);
+    this.darkState = new darkState(this);
+    this.template = `
             <button
               class="ml-switch ml-switch-appearance"
               type="button"
@@ -105,32 +102,31 @@ class SwitchButton {
                   </svg>
                 </span>
               </span>
-            </button>`;//开关的dom模板
-        this.createSwitch();
-    }
-    createSwitch() {
+            </button>`; //开关的dom模板
+    this.createSwitch();
+  }
+  createSwitch() {
+    const container = document.createElement("div");
+    // 将模板字符串转换为节点对象
+    container.innerHTML = this.template;
+    document.querySelector(this.el).appendChild(container.firstElementChild);
+    this.lightState.turnOn(); //默认light模式
+    this.setState(this.lightState);
+  }
 
-        const container = document.createElement('div');
-        // 将模板字符串转换为节点对象
-        container.innerHTML = this.template;
-        document.querySelector(this.el).appendChild(container.firstElementChild);
-        this.lightState.turnOn();//默认light模式
-        this.setState(this.lightState);
-    }
-
-    setState(state) {
-        this.currentState = state;// 当前默认light状态
-        this.setGlobalState();
-    }
-    setGlobalState() {
-        Object.entries(this.currentState.varMap).forEach(([rootvar, lightvar]) => {
-            document.documentElement.style.setProperty(rootvar, `var(${lightvar})`);
-        });
-    }
-    //监听用户行为切换状态
-    toggle() {
-        this.currentState.turnOff();
-    }
+  setState(state) {
+    this.currentState = state; // 当前默认light状态
+    this.setGlobalState();
+  }
+  setGlobalState() {
+    Object.entries(this.currentState.varMap).forEach(([rootvar, lightvar]) => {
+      document.documentElement.style.setProperty(rootvar, `var(${lightvar})`);
+    });
+  }
+  //监听用户行为切换状态
+  toggle() {
+    this.currentState.turnOff();
+  }
 }
 
 export default SwitchButton;

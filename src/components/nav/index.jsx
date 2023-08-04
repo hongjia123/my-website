@@ -1,8 +1,8 @@
-import './css/index.less';
-import { ref, reactive, onMounted, computed, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import arrowIcon from './img/icon_arrow.png';
-import SwitchButton from '../setTheme';
+import "./css/index.less";
+import { ref, reactive, onMounted, computed, watch } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import arrowIcon from "./img/icon_arrow.png";
+import SwitchButton from "../setTheme";
 const props = {
   order: String,
 };
@@ -11,58 +11,58 @@ const NavBar = {
   setup(props) {
     const navlist = reactive([
       {
-        name: 'Home',
-        path: '#/home',
+        name: "Home",
+        path: "#/home",
       },
       {
-        name: '知识总结',
-        path: '#/summary',
+        name: "知识总结",
+        path: "#/summary",
         children: [
           {
-            name: 'http专项',
-            path: 'hp',
+            name: "http专项",
+            path: "hp",
           },
           {
-            name: 'css进阶',
-            path: 'css_advance',
+            name: "css进阶",
+            path: "css_advance",
           },
           {
-            name: 'js高级',
-            path: 'js_advance',
+            name: "js高级",
+            path: "js_advance",
           },
           {
-            name: 'vue框架',
-            path: 'vue',
+            name: "vue框架",
+            path: "vue",
           },
           {
-            name: '工程化',
-            path: 'engineering',
+            name: "工程化",
+            path: "engineering",
           },
           {
-            name: '模块化',
-            path: 'modularity',
+            name: "模块化",
+            path: "modularity",
           },
           {
-            name: '性能优化',
-            path: 'optimization',
+            name: "性能优化",
+            path: "optimization",
           },
         ],
       },
       {
-        name: '技术交流',
-        path: '#/shares',
+        name: "技术交流",
+        path: "#/shares",
       },
       {
-        name: '每日·壹题',
-        path: '#/daily',
+        name: "每日·壹题",
+        path: "#/daily",
       },
       {
-        name: '进阶原理',
-        path: '#/advance',
+        name: "进阶原理",
+        path: "#/advance",
       },
       {
-        name: '慧思·泉涌',
-        path: '#/',
+        name: "慧思·泉涌",
+        path: "#/",
       },
     ]);
     const currIndex = ref(0);
@@ -71,29 +71,29 @@ const NavBar = {
     let mySwitch = {};
     onMounted(() => {
       document
-        .querySelectorAll('.nav_item')[1]
-        .addEventListener('mouseover', function (e) {
-          document.querySelector('.child').style.visibility = 'visible';
-          document.querySelector('.link-2').nextElementSibling.style.transform =
-            'rotateZ(-180deg)';
+        .querySelectorAll(".nav_item")[1]
+        .addEventListener("mouseover", function (e) {
+          document.querySelector(".child").style.visibility = "visible";
+          document.querySelector(".link-2").nextElementSibling.style.transform =
+            "rotateZ(-180deg)";
         });
       document
-        .querySelectorAll('.nav_item')[1]
-        .addEventListener('mouseout', function (e) {
-          document.querySelector('.child').style.visibility = 'hidden';
-          document.querySelector('.link-2').nextElementSibling.style.transform =
-            'rotateZ(0deg)';
+        .querySelectorAll(".nav_item")[1]
+        .addEventListener("mouseout", function (e) {
+          document.querySelector(".child").style.visibility = "hidden";
+          document.querySelector(".link-2").nextElementSibling.style.transform =
+            "rotateZ(0deg)";
         });
       document
-        .querySelector('.nav_item_link')
-        .addEventListener('mouseout', function (e) {
-          document.querySelector('.child').style.visibility = 'hidden';
-          document.querySelector('.link-2').nextElementSibling.style.transform =
-            'rotateZ(0deg)';
+        .querySelector(".nav_item_link")
+        .addEventListener("mouseout", function (e) {
+          document.querySelector(".child").style.visibility = "hidden";
+          document.querySelector(".link-2").nextElementSibling.style.transform =
+            "rotateZ(0deg)";
         });
-      document.documentElement.classList.add('dark', 'light');
+      document.documentElement.classList.add("dark", "light");
       mySwitch = new SwitchButton({
-        el: '.my-switch'
+        el: ".my-switch",
       });
     });
     watch(
@@ -102,51 +102,51 @@ const NavBar = {
         const path = newPath.match(/(?<=\/).*?(\/)\w+$/);
         if (path) {
           const parentlist = navlist.find(
-            (ele) => ele.path === '#/' + path[0].split('/')[0]
+            (ele) => ele.path === "#/" + path[0].split("/")[0]
           );
           const childlist = parentlist.children?.find(
-            (ele) => ele.path === path[0].split('/')[1]
+            (ele) => ele.path === path[0].split("/")[1]
           );
           parentlist.name = childlist.name;
-          setChildrenStyle({ childlist, parentlist, type: 'child' });
+          setChildrenStyle({ childlist, parentlist, type: "child" });
         } else {
-          setChildrenStyle({ type: 'parent' });
+          setChildrenStyle({ type: "parent" });
         }
       }
     );
     const setParentRouter = function (list, index) {
       if (!list.children) {
         currIndex.value = index;
-        setChildrenStyle({ list, index, type: 'parent' });
+        setChildrenStyle({ list, index, type: "parent" });
         router.push({
-          path: list.path.replace('#', ''),
+          path: list.path.replace("#", ""),
         });
       } else {
-        currIndex.value = '';
+        currIndex.value = "";
       }
     };
     const setChildRouter = function (childlist, parentlist) {
-      setChildrenStyle({ childlist, parentlist, type: 'child' });
+      setChildrenStyle({ childlist, parentlist, type: "child" });
       router.push({
-        path: parentlist.path.replace('#', '') + '/' + childlist.path,
+        path: parentlist.path.replace("#", "") + "/" + childlist.path,
       });
     };
     const setChildrenStyle = (option) => {
-      if (option.type === 'child') {
+      if (option.type === "child") {
         const { childlist, parentlist } = option;
-        currIndex.value = '';
+        currIndex.value = "";
         parentlist.name = childlist.name;
-        document.querySelectorAll('.nav_item_link')[1].style.color = '#46bd87';
-        document.querySelectorAll('.nav_item_link')[1].style.fontWeight = '600';
-        document.querySelectorAll('.nav_item_link')[1].style.fontSize =
-          '1.2rem';
+        document.querySelectorAll(".nav_item_link")[1].style.color = "#46bd87";
+        document.querySelectorAll(".nav_item_link")[1].style.fontWeight = "600";
+        document.querySelectorAll(".nav_item_link")[1].style.fontSize =
+          "1.2rem";
       }
-      if (option.type === 'parent') {
+      if (option.type === "parent") {
         // console.log(list);
-        navlist[1].name = '知识总结';
-        document.querySelectorAll('.nav_item_link')[1].style.color = '';
-        document.querySelectorAll('.nav_item_link')[1].style.fontWeight = '';
-        document.querySelectorAll('.nav_item_link')[1].style.fontSize = '';
+        navlist[1].name = "知识总结";
+        document.querySelectorAll(".nav_item_link")[1].style.color = "";
+        document.querySelectorAll(".nav_item_link")[1].style.fontWeight = "";
+        document.querySelectorAll(".nav_item_link")[1].style.fontSize = "";
       }
     };
 
@@ -166,10 +166,10 @@ const NavBar = {
                   <div class="nav_item">
                     <a
                       class={[
-                        'nav_item_link',
+                        "nav_item_link",
                         {
                           link_active: currIndex.value === index,
-                          'link-2': index == 1,
+                          "link-2": index == 1,
                         },
                       ]}
                       onClick={() => setParentRouter(item, index)}
@@ -182,7 +182,7 @@ const NavBar = {
                         {item.children.map((ele) => {
                           return (
                             <a
-                              className={['child_link']}
+                              className={["child_link"]}
                               onClick={() => setChildRouter(ele, item)}
                             >
                               {ele.name}
@@ -195,8 +195,7 @@ const NavBar = {
                 );
               })}
             </nav>
-            <div class="my-switch" onClick={() => mySwitch.toggle()}>
-            </div>
+            <div class="my-switch" onClick={() => mySwitch.toggle()}></div>
             <a
               class="ml_social_link"
               href="https://github.com/hongjia123/my-website/"

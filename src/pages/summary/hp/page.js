@@ -1,5 +1,5 @@
 export default {
-  title: 'http',
+  title: "http",
   keepAlive: false,
   order: 0,
 };

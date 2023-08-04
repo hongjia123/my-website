@@ -1,6 +1,6 @@
-import SplitContainer from '../common/split-container';
-import './css/index.less';
-import { onMounted, defineAsyncComponent } from 'vue';
+import SplitContainer from "../common/split-container";
+import "./css/index.less";
+import { onMounted, defineAsyncComponent } from "vue";
 
 const Optimization = {
   setup() {
@@ -8,31 +8,31 @@ const Optimization = {
     const leftlist = [
       {
         id: 1,
-        name: '1. 首屏与静态资源加载优化',
+        name: "1. 首屏与静态资源加载优化",
       },
       {
         id: 2,
-        name: '2. http优化',
+        name: "2. http优化",
       },
       {
         id: 3,
-        name: '3. js性能优化',
+        name: "3. js性能优化",
       },
       {
         id: 4,
-        name: '4. 流程优化',
+        name: "4. 流程优化",
       },
       {
         id: 5,
-        name: '5. 构建性能优化',
+        name: "5. 构建性能优化",
       },
     ];
     const component = {
-      1: defineAsyncComponent(() => import('./html1.jsx')),
-      2: defineAsyncComponent(() => import('./html2.jsx')),
-      3: defineAsyncComponent(() => import('./html3.jsx')),
-      4: defineAsyncComponent(() => import('./html4.jsx')),
-      5: defineAsyncComponent(() => import('./html5.jsx')),
+      1: defineAsyncComponent(() => import("./html1.jsx")),
+      2: defineAsyncComponent(() => import("./html2.jsx")),
+      3: defineAsyncComponent(() => import("./html3.jsx")),
+      4: defineAsyncComponent(() => import("./html4.jsx")),
+      5: defineAsyncComponent(() => import("./html5.jsx")),
     };
     return () => (
       <div class="hp-container">

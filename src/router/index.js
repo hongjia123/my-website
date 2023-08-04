@@ -1,6 +1,6 @@
-import { createRouter, createWebHashHistory } from 'vue-router';
-const pages = require.context('../pages/', true, /page\.js$/);
-const modules = require.context('../pages/', true, /index\.(vue|jsx|tsx|js)/);
+import { createRouter, createWebHashHistory } from "vue-router";
+const pages = require.context("../pages/", true, /page\.js$/);
+const modules = require.context("../pages/", true, /index\.(vue|jsx|tsx|js)/);
 
 // 模块对应子路由集合
 const childrenModulesList = {};
@@ -9,11 +9,11 @@ let moduleNames = [];
 const setChild = function (callback) {
   modules
     .keys()
-    .filter((path) => !path.startsWith('./'))
+    .filter((path) => !path.startsWith("./"))
     .forEach((path) => {
       const filename = path.match(/(?<=pages\/).*?(?=\/index.jsx)/);
-      if (filename[0].split('/').length > 1) {
-        callback && callback(filename[0].split('/'), path);
+      if (filename[0].split("/").length > 1) {
+        callback && callback(filename[0].split("/"), path);
       }
     });
   if (Object.keys(childrenModulesList).length == 0) {
@@ -30,7 +30,7 @@ setChild(function (filenameArr) {
 });
 // 给对应模块设置所有子路由对象
 setChild(function (filenameArr, path) {
-  const moduleFileName = path.replace('index.jsx', 'page.js');
+  const moduleFileName = path.replace("index.jsx", "page.js");
   const { title, keepAlive, order } = pages(moduleFileName).default;
   childrenModulesList[filenameArr[0]].push({
     path: filenameArr[1],
@@ -44,15 +44,15 @@ setChild(function (filenameArr, path) {
 // 获取目录中所有模块的文件名列表
 const routes = pages
   .keys()
-  .filter((path) => !path.startsWith('./'))
+  .filter((path) => !path.startsWith("./"))
   .map((path) => {
-    if (path.split('/').length == 3) {
+    if (path.split("/").length == 3) {
       const filename = path.match(/(?<=\/).*?(?=\/)/);
-      const moduleFileName = path.replace('page.js', 'index.jsx');
+      const moduleFileName = path.replace("page.js", "index.jsx");
       const { title, keepAlive, order } = pages(path).default;
       // console.log(moduleFileName);
       return {
-        path: '/' + filename[0],
+        path: "/" + filename[0],
         name: filename[0],
         component: modules(moduleFileName).default,
         meta: {
@@ -66,8 +66,8 @@ const routes = pages
   })
   .filter(Boolean);
 routes.push({
-  path: '/',
-  redirect: '/home',
+  path: "/",
+  redirect: "/home",
 });
 // const routes=[
 //   {

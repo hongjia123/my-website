@@ -1,5 +1,5 @@
-import { reactive, ref } from 'vue';
-import './css/index.less';
+import { reactive, ref } from "vue";
+import "./css/index.less";
 const Home = {
   setup(props, { attrs, emit, slots }) {
     return () => (

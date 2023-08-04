@@ -1,4 +1,4 @@
-import { reactive, ref } from 'vue';
+import { reactive, ref } from "vue";
 const Home = {
   setup(props, { attrs, emit, slots }) {
     return () => (
