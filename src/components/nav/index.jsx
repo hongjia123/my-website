@@ -19,7 +19,7 @@ const NavBar = {
         path: "#/summary",
         children: [
           {
-            name: "http专项",
+            name: "网络专项",
             path: "hp",
           },
           {

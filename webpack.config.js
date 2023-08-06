@@ -35,7 +35,7 @@ const config = {
   },
   output: {
     filename: "static/js/[name].[contenthash:8].js",
-    chunkFilename: "static/js/chunk-[hash:8].[chunkhash:8].js",
+    chunkFilename: "static/js/chunk-[chunkhash:8].[contenthash:8].js",
     path: path.resolve(__dirname, "dist"),
     publicPath: "",
   },
@@ -152,12 +152,12 @@ const config = {
     // 提取css样为单独文件
     new MiniCssExtractPlugin({
       filename: "static/css/[name].[contenthash:8].css",
-      chunkFilename: "static/css/chunk-[hash:8].[contenthash:8].css",
+      chunkFilename: "static/css/chunk-[hash:8].[chunkhash:8].css",
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src", "index.html"), // 模板 HTML 文件的路径
       filename: "index.html", // 输出的 HTML 文件名称
-      chunks: ["index", "vendor"],
+      // chunks: ["index", "vendor"],
       templateParameters: {
         globalStyles: '<link href="assets/common.css" rel="stylesheet">',
       },

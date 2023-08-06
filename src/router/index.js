@@ -32,6 +32,9 @@ setChild(function (filenameArr) {
 setChild(function (filenameArr, path) {
   const moduleFileName = path.replace("index.jsx", "page.js");
   const { title, keepAlive, order } = pages(moduleFileName).default;
+  if(filenameArr[1]==='principle'){
+    filenameArr[1] = 'http.html';
+  }
   childrenModulesList[filenameArr[0]].push({
     path: filenameArr[1],
     name: filenameArr[1],
@@ -69,31 +72,28 @@ routes.push({
   path: "/",
   redirect: "/home",
 });
-// const routes=[
-//   {
-//     path:'/home',
-//     component:()=>import('../pages/home/index.jsx')
-//   },
-//   {
-//     path: '/summary',
-//     component: () => import('../pages/summary/index.jsx'),
-//     children:[
-//       {
-//         path:'vue',
-//         component:()=>import('../pages/summary/vue/index.jsx')
-//       }
-//     ]
-//   },
-//   {
-//     path: '/shares',
-//     component: () => import('../pages/shares/index.jsx')
-//   },
-// ]
+
 console.log(routes);
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
+  scrollBehavior(to) {
+    if (to.hash) {
+      const element = document.querySelector(to.hash);
+      if (element) {
+        // 使用offset值可自定义滚动位置
+        // element.scrollIntoView({ behavior: 'auto' })
+        const offset = 80;
+        const position = {
+          top: element.offsetTop - offset,
+          behavior: 'auto' // 或者 'auto'
+        };
+        return window.scrollTo(position);
+      }
+    }
+    return { top: 0 };
+  }
 });
 
 export default router;

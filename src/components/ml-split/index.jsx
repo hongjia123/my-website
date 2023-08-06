@@ -18,7 +18,8 @@ const Split = {
         isResizing.value = true;
       });
       root.addEventListener("mousemove", function (e) {
-        const maxClientX = e.clientX > 1000 ? 1000 : e.clientX;
+        const minClientX = e.clientX < 200 ? 200 : e.clientX;
+        const maxClientX = e.clientX > 1000 ? 1000 : minClientX;
         if (isResizing.value) {
           requestAnimationFrame(() => {
             middle.style.width = `calc(100% - ${maxClientX}px - 200px)`;

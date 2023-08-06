@@ -4,6 +4,9 @@ body {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  --vt-font-family-base: Quotes, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  text-rendering: unset !important;
+  font-synthesis: unset !important;
 }
 
 body {
@@ -12,6 +15,18 @@ body {
   background-color: var(--ml-bg-color);
   color: var(--ml-text-color);
   transition: color 0.5s, background-color 0.5s;
+  font-family: var(--vt-font-family-base);
+  letter-spacing: .5px;
+  line-height: 24px;
+  font-size: 16px;
+  font-weight: 400;
+  direction: ltr;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  transition: color .5s, background-color .5s;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-wrap: break-word;
 }
 
 h1 {
@@ -55,6 +70,14 @@ li {
 
 pre {
   overflow: auto;
+}
+
+code {
+  background-color: var(--ml-c-bg-mute);
+  padding: 0.15em 0.5em;
+  border-radius: 4px;
+  color: var(--ml-c-text-code);
+  transition: color .5s, background-color .5s;
 }
 
 code,
@@ -165,6 +188,7 @@ th {
   padding: 0;
 }
 
+
 :root {
   --ml-bg-color: #fff;
   --ml-text-color: #000;
@@ -172,6 +196,8 @@ th {
   --ml-text1-color: #666;
   --ml-borderB-color: #d7d5d5;
   --ml-principle-bg-color: #f9f9f9;
+  --ml-c-bg-mute: #f1f1f1;
+  --ml-c-text-code:#476582;
 }
 
 .dark {
@@ -179,6 +205,8 @@ th {
   --ml-dark-text-color: #fff;
   --ml-dark-borderB-color: rgba(84, 84, 84, 0.48);
   --ml-principle-dark-bg-color: #202020;
+  --ml-c-black-mute: #2f2f2f;
+  --ml-c-text-dark-code:#aac8e4
 }
 
 .light {
@@ -186,4 +214,6 @@ th {
   --ml-light-text-color: #000;
   --ml-light-borderB-color: #d7d5d5;
   --ml-principle-light-bg-color: #f9f9f9;
+  --ml-c-white-mute: #f1f1f1;
+  --ml-c-text-light-code: #476582;
 }

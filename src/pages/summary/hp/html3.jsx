@@ -1,2 +1,11 @@
-const Html3 = <div>12345</div>;
+import './css/html.less';
+const Html3 = {
+    setup(){
+        return()=>(
+            <div>
+                
+            </div>
+        )
+    }
+};
 export default Html3;

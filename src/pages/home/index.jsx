@@ -3,7 +3,7 @@ import "./css/index.less";
 const Home = {
   setup(props, { attrs, emit, slots }) {
     return () => (
-      <div>
+      <div className="home-container">
         <main class="home">
           <header class="header">
             <img class="gifIcon" src={gifIcon} alt="" />

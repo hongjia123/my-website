@@ -1,10 +1,8 @@
 import SplitContainer from "../common/split-container";
 import "./css/index.less";
-import { onMounted, defineAsyncComponent } from "vue";
-
+import { onMounted, defineAsyncComponent,ref } from "vue";
 const Hp = {
   setup() {
-    onMounted(() => {});
     const leftlist = [
       {
         id: 1,
@@ -12,11 +10,11 @@ const Hp = {
       },
       {
         id: 2,
-        name: "2. http协议",
+        name: "2. 网络连接原理(http)",
       },
       {
         id: 3,
-        name: "3. http请求--Ajax",
+        name: "3. Ajax",
       },
       {
         id: 4,
@@ -34,10 +32,14 @@ const Hp = {
       4: defineAsyncComponent(() => import("./html4.jsx")),
       5: defineAsyncComponent(() => import("./html5.jsx")),
     };
+    const Index = ref(0);
+    onMounted(() => { 
+    });
+
     return () => (
       <div class="hp-container">
-        <SplitContainer leftContent={leftlist} rightContent={component} />
-      </div>
+        <SplitContainer leftContent={leftlist} rightContent={component} Index={Index}/>
+      </div> 
     );
   },
 };

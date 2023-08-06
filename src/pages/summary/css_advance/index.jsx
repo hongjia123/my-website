@@ -1,6 +1,6 @@
 import SplitContainer from "../common/split-container";
 import "./css/index.less";
-import { onMounted, defineAsyncComponent } from "vue";
+import { onMounted, defineAsyncComponent,ref } from "vue";
 
 const CsAdvance = {
   setup() {
@@ -8,7 +8,7 @@ const CsAdvance = {
     const leftlist = [
       {
         id: 1,
-        name: "1. css布局",
+        name: "1. css BFC",
       },
       {
         id: 2,
@@ -20,11 +20,7 @@ const CsAdvance = {
       },
       {
         id: 4,
-        name: "4. css响应式",
-      },
-      {
-        id: 5,
-        name: "5. css兼容",
+        name: "4. css响应式布局与浏览器兼容",
       },
     ];
     const component = {
@@ -34,9 +30,10 @@ const CsAdvance = {
       4: defineAsyncComponent(() => import("./html4.jsx")),
       5: defineAsyncComponent(() => import("./html5.jsx")),
     };
+    const Index = ref(0);
     return () => (
       <div class="hp-container">
-        <SplitContainer leftContent={leftlist} rightContent={component} />
+        <SplitContainer leftContent={leftlist} rightContent={component} Index={Index}/>
       </div>
     );
   },
