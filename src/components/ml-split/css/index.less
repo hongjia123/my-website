@@ -1,6 +1,6 @@
 .ml-split-container {
   width: 100%;
-  height: 800px;
+  height: auto;
   display: flex;
   display: -webkit-flex;
 
@@ -22,7 +22,24 @@
       cursor: col-resize;
     }
   }
+.left_nav {
+  cursor: pointer;
+}
 
+.left_active {
+  color: #46bd87;
+  position: relative;
+
+  &::before {
+    content: "";
+    display: block;
+    width: 5px;
+    height: 100%;
+    background-color: #46bd87;
+    position: absolute;
+    left: -30px;
+  }
+}
   .middle-content-container {
     width: calc(100% - var(--left-width) - 200px);
     height: 100%;

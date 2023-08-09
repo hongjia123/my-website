@@ -13,7 +13,7 @@ const Split = {
       const splitline = document.querySelector('.split-line');
       const middle = document.querySelector('.middle-content-container');
       const root = document.documentElement;
-      document.querySelector('.hp-container').style.setProperty('--left-width', getComputedStyle(left).width);
+      document.querySelector('.hp-container') && document.querySelector('.hp-container').style.setProperty('--left-width', getComputedStyle(left).width);
       splitline.addEventListener("mousedown", function ($event) {
         isResizing.value = true;
       });
@@ -35,7 +35,6 @@ const Split = {
         isResizing.value = false;
       });
     });
-
     return () => (
       <div class="ml-split-container">
         <div class="left-title-nav">

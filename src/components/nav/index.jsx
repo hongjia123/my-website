@@ -100,15 +100,18 @@ const NavBar = {
       () => route.path,
       (newPath) => {
         const path = newPath.match(/(?<=\/).*?(\/)\w+$/);
+        console.log(path);
         if (path) {
           const parentlist = navlist.find(
-            (ele) => ele.path === "#/" + path[0].split("/")[0]
+            (ele) => ele.path === ("#/" + path[0].split("/")[0])
           );
           const childlist = parentlist.children?.find(
             (ele) => ele.path === path[0].split("/")[1]
           );
-          parentlist.name = childlist.name;
-          setChildrenStyle({ childlist, parentlist, type: "child" });
+          if(childlist){
+            parentlist.name = childlist.name;
+            setChildrenStyle({ childlist, parentlist, type: "child" });
+          }
         } else {
           setChildrenStyle({ type: "parent" });
         }

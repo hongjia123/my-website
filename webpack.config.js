@@ -108,7 +108,8 @@ const config = {
             loader: "css-loader",
             options: {
               // modules: {
-              //   localIdentName: '[local]_[hash:8]'
+              //   localIdentName: '[local][data-v-[hash:8]',
+              //   exportLocalsConvention:'asIs'
               // },
             },
           },
@@ -129,14 +130,22 @@ const config = {
           name: "[name].[hash:8].[ext]", // 输出文件名格式
         },
       },
-      {
-        test: /\.(jsx|vue|js)$/,
-        include: [
-          path.resolve(__dirname, "src"), // 处理 src 目录下的文件
-        ],
-        loader: "eslint-loader",
-        enforce: "pre",
-      },
+      // {
+      //   test:/(assets\/common\.css)$/,
+      //   type:'',
+      //   loader:'file-loader',
+      //   options: {
+      //     name: 'chunk-vendors/[name].[css]',
+      //   },
+      // }
+      // {
+      //   test: /\.(jsx|vue|js)$/,
+      //   include: [
+      //     path.resolve(__dirname, "src"), // 处理 src 目录下的文件
+      //   ],
+      //   loader: "eslint-loader",
+      //   enforce: "pre",
+      // },
     ],
   },
   cache: false,
@@ -145,22 +154,21 @@ const config = {
     new webpack.DefinePlugin({
       // 被浏览器环境所识别
       processArgv: JSON.stringify(process.argv),
+      __VUE_PROD_DEVTOOLS__: JSON.stringify(false)
+
     }),
     // 解析vue单位件组件插件
     new VueLoaderPlugin(),
 
     // 提取css样为单独文件
     new MiniCssExtractPlugin({
-      filename: "static/css/[name].[contenthash:8].css",
-      chunkFilename: "static/css/chunk-[hash:8].[chunkhash:8].css",
+      filename: "static/css/[name].[chunkhash:8].css",
+      chunkFilename: "static/css/chunk-[chunkhash:8].[contenthash:8].css",
     }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src", "index.html"), // 模板 HTML 文件的路径
       filename: "index.html", // 输出的 HTML 文件名称
       // chunks: ["index", "vendor"],
-      templateParameters: {
-        globalStyles: '<link href="assets/common.css" rel="stylesheet">',
-      },
     }),
     // 构建进度条
     new ProgressBarWebpackPlugin({
@@ -171,9 +179,6 @@ const config = {
     new RenderServerInfoPlugin({
       spinner,
       port,
-    }),
-    new CopyWebpackPlugin({
-      patterns: [{ from: "src/assets/common.css", to: "assets/common.css" }],
     }),
   ],
 };
@@ -205,26 +210,33 @@ module.exports = function () {
       // },
       concatenateModules: true,
       splitChunks: {
-        // chunks: 'async',
-        // minSize: 20000,
-        // maxSize: 70000,
-        // minChunks: 1,
-        // maxAsyncRequests: 6,
-        // maxInitialRequests: 4,
-        // automaticNameDelimiter: '~',
-        // enforceSizeThreshold: 50000,
+        chunks: 'all',
+        minSize: 30000,
+        minChunks: 1,
+        maxAsyncRequests: 6,
+        maxInitialRequests: 4,
+        automaticNameDelimiter: '-',
+        enforceSizeThreshold: 50000,
         cacheGroups: {
           commons: {
-            name: "commons",
+            name: "chunk-vendors",
+            test:/[\\/]src[\\/]/,
+            chunks:"initial",
             minChunks: 1,
-            priority: 20,
             reuseExistingChunk: true,
+            // enforce:true
           },
           vendors: {
             test: /[\\/]node_modules[\\/]/,
             name: "chunk-vendors",
             chunks: "all",
             priority: 10,
+          },
+          styles: {
+            test: /\.less$/,
+            chunks: 'async',
+            minSize: 1000,
+            enforce: true,
           },
         },
       },

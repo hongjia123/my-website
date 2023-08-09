@@ -1,22 +1,16 @@
 import Split from "@components/ml-split";
 import { reactive, ref, h, onMounted } from "vue";
 import { useRoute } from "vue-router";
-const Left = (props) => {
-  const route = useRoute();
+const Index = ref(0);
 
-  const leftList = props.leftContent.map((list)=>{
-    if(list.id==route.query.id){
-      Index.value = list.id - 1;
-    }
-    return list
-  });
-  const clickItem=(list)=>{
-   Index.value = list.id - 1;
+const Left = (props) => {
+  const clickItem = (list) => {
+    Index.value = list.id - 1;
   }
   return (
     <div>
       <br />
-      {leftList.map((list, index) => {
+      {props.leftContent.map((list, index) => {
         return (
           <div>
             <div
@@ -37,12 +31,16 @@ const Left = (props) => {
     </div>
   );
 };
-const Index = ref(0);
 const SplitContainer = {
   props: ["leftContent", "rightContent", "Index"],
   setup(props) {
+    const route = useRoute();
     onMounted(() => {
-
+      props.leftContent.forEach((list) => {
+        if (list.id == route.query.id) {
+          Index.value = list.id - 1;
+        }
+      });
     });
     Index.value = props.Index.value;
     return () => (
@@ -50,7 +48,6 @@ const SplitContainer = {
         v-slots={{
           Left,
           Content: (props) => {
-            // console.log(h(props.rightContent), props.rightContent);
             return h(props.rightContent);
           },
         }}
