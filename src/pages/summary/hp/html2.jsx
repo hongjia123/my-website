@@ -1,4 +1,4 @@
-import './css/html.less';
+import '.././common/css/html.less';
 const Html2 = {
     setup() {
         return () => (

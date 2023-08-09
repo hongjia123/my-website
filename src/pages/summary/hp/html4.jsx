@@ -1,4 +1,4 @@
-import './css/html.less';
+import '.././common/css/html.less';
 import cacheImg from './img/cache.png';
 import processImg  from './img/cache_process.png';
 const Html4 = {

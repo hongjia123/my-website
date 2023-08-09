@@ -68,10 +68,18 @@ const routes = pages
     }
   })
   .filter(Boolean);
-routes.push({
-  path: "/",
-  redirect: "/home",
-});
+// const routes = [
+//   {
+//     path:'home',
+//     name:'home',
+//     components:()=>import('../pages/home/index.jsx')
+//   },
+//   {
+//     path: 'advance',
+//     name: 'advance',
+//     components: () => import('../pages/advance/index.jsx')
+//   }
+// ]
 
 console.log(routes);
 

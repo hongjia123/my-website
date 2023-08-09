@@ -1,5 +1,4 @@
 import SplitContainer from "../common/split-container";
-import "./css/index.less";
 import { onMounted, defineAsyncComponent ,ref} from "vue";
 
 const Optimization = {

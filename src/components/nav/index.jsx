@@ -104,7 +104,7 @@ const NavBar = {
           const parentlist = navlist.find(
             (ele) => ele.path === "#/" + path[0].split("/")[0]
           );
-          const childlist = parentlist.children?.find(
+          const childlist = parentlist.children.find(
             (ele) => ele.path === path[0].split("/")[1]
           );
           parentlist.name = childlist.name;

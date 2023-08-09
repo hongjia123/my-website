@@ -1,11 +1,11 @@
-import './css/html.less';
+import styles from '.././common/css/html.less';
 import tcpimg from './img/tcp.png';
 const Html1 = {
     setup(){
         return ()=>(
-            <div>
+            <div class='hp-container'>
                 <h1>HTTP</h1>
-                <div className="web-content">
+                <div class='web-content' >
                     <h3>含义示例</h3>
                     <p>&nbsp;&nbsp;  HTTP（Hypertext Transfer Protocol）是一种用于传输超文本的协议,用来在客户端和服务器之间传输数据。前端开发人员需要了解HTTP请求和响应的基本原理、常见的请求方法（GET、POST等）以及状态码的含义。</p>
                     <br />
