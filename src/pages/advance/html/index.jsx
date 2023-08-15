@@ -120,8 +120,23 @@ const SplitContainer = {
                 value: 'build',
                 children: [
                     {
-                        name: 'webpack',
+                        name: 'webpack的打包原理',
                         value: 'webpack',
+                        content: ['process', 'stream', 'realization']
+                    },
+                    {
+                        name: '加载器loader原理',
+                        value: 'loader',
+                        content: ['package', 'loader', 'plugin', 'hot']
+                    },
+                    {
+                        name: '插件plugin原理',
+                        value: 'plugin',
+                        content: ['package', 'loader', 'plugin', 'hot']
+                    },
+                    {
+                        name: '热模块替换原理',
+                        value: 'hot',
                         content: ['package', 'loader', 'plugin', 'hot']
                     },
                     {
@@ -178,10 +193,10 @@ const SplitContainer = {
 
             }
         }
+        onMounted(()=>{
+            
+        })
         useParentList(list);
-        onMounted(() => {
-            document.querySelector('.left-title-nav').style.width = '400px';
-        });
         return () => (
            <div class='advance'>
                 <Split

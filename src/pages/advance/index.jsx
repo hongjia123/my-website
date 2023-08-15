@@ -54,12 +54,35 @@ const ParentNavpage = {
           <h2 id="全局-api">构建工具篇</h2>
           <div class="api-groups">
             <div class="api-group">
-              <h3>webpakck</h3>
+              <h3>webpakck打包原理</h3>
               <ul>
-                <li><a href="#/advance/webpack.html#package">webpack打包原理</a></li>
-                <li><a href="#/advance/webpack.html#loader">loader</a></li>
-                <li><a href="#/advance/webpack.html#plugin">plugin</a></li>
-                <li><a href="#/advance/webpack.html#hot">热模块替换</a></li>
+                <li><a href="#/advance/webpack.html#process">打包流程</a></li>
+                <li><a href="#/advance/webpack.html#stream">webpack事件流</a></li>
+                <li><a href="#/advance/webpack.html#realization">具体实现</a></li>
+              </ul>
+            </div>
+            <div class="api-group">
+              <h3>加载器loader原理</h3>
+              <ul>
+                <li><a href="#/advance/loader.html#package">打包流程</a></li>
+                <li><a href="#/advance/loader.html#loader">webpack事件流</a></li>
+                <li><a href="#/advance/loader.html#plugin">具体实现</a></li>
+              </ul>
+            </div>
+            <div class="api-group">
+              <h3>插件plugin原理</h3>
+              <ul>
+                <li><a href="#/advance/plugin.html#package">打包流程</a></li>
+                <li><a href="#/advance/plugin.html#loader">webpack事件流</a></li>
+                <li><a href="#/advance/plugin.html#plugin">具体实现</a></li>
+              </ul>
+            </div>
+            <div class="api-group">
+              <h3>热模块替换原理</h3>
+              <ul>
+                <li><a href="#/advance/hot.html#package">打包流程</a></li>
+                <li><a href="#/advance/hot.html#loader">webpack事件流</a></li>
+                <li><a href="#/advance/hot.html#plugin">具体实现</a></li>
               </ul>
             </div>
             <div class="api-group">

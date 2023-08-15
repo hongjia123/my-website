@@ -1,12 +1,17 @@
 import '../common/css/html.less';
 import hljs from 'highlight.js/lib/core';
 import javascript from 'highlight.js/lib/languages/javascript';
-hljs.registerLanguage('javascript', javascript);
 import { onMounted } from 'vue';
+import { useRoute } from "vue-router";
+
 const Build = {
     setup() {
+        hljs.registerLanguage('javascript', javascript);
+        const route = useRoute();
         onMounted(() => {
             hljs.highlightAll();
+            
+
         })
         return () => (
             <div>
@@ -15,7 +20,7 @@ const Build = {
                     <a class="header-anchor" href="#webpack的打包原理" aria-label="Permalink to &quot;webpack的打包原理 {#webpack的打包原理}&quot;"></a>
                 </h1>
                 <div className="web-content">
-                    <h3>
+                    <h3 id='process'>
                         打包流程
                     </h3>
                     <ul>
@@ -33,7 +38,7 @@ const Build = {
                     <img src="" alt="" className="src" />
 
                     <br />
-                    <h3>实现webpack事件流</h3>
+                    <h3 id="stream">实现webpack事件流</h3>
                     <p>
                         这里需要借助Tapable，它是一个类似与node.js中的EventEmitter的库，但<strong>专注于自定义事件的触发和处理</strong>
                         通过Tapable我们可以注册自定义事件，然后在适当的时机去执行自定义事件。
@@ -89,7 +94,7 @@ const Build = {
                         </pre>
                     </p>
                     <br />
-                    <h3>
+                    <h3 id='realization'>
                         具体实现
                     </h3>
                     <ul>
@@ -103,7 +108,6 @@ const Build = {
                         <li>(8) 等所有模块都编译完成后，根据模块之间的依赖关系，组装代码块<code>chunk</code></li>
                         <li>(9) 把各个代码块<code>chunk</code>转换成一个一个文件加入到输出列表</li>
                         <li>(10) 确定好输出内容之后，根据配置的输出路径和文件名，将文件内容写入到文件系统</li>
-
                     </ul>
                     <br />
                     <h4>
@@ -203,7 +207,7 @@ const Build = {
                                 "\n plugins:[new WebpackRunPlugin(),new WebpackDonePlugin()]",
                                 "\n}"
                             ]}
-                            </code></pre>
+                        </code></pre>
                     </p>
                     <br />
                     <p>
@@ -245,7 +249,7 @@ const Build = {
                                 "\n compiler(){",
                                 "\n  //",
                                 "\n}",
-                                
+
                                 "\n\n 第四步：执行`compiler` 对象的`run方法开始执行编译`",
                                 "\n run(callback){",
                                 "\n   this.hooks.run.call(); //在编译前触发触发run钩子",

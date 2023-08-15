@@ -32,7 +32,7 @@ setChild(function (filenameArr) {
 setChild(function (filenameArr, path) {
   const moduleFileName = path.replace("index.jsx", "page.js");
   const { title, keepAlive, order } = pages(moduleFileName).default;
-  if(filenameArr[1]==='html'){
+  if (filenameArr[1] === 'html') {
     filenameArr[1] = ':name.html';
   }
   childrenModulesList[filenameArr[0]].push({
@@ -87,20 +87,25 @@ const router = createRouter({
   history: createWebHashHistory(),
   routes,
   scrollBehavior(to) {
+    let raf;
     if (to.hash) {
-      const element = document.querySelector(to.hash);
-      if (element) {
-        // 使用offset值可自定义滚动位置
-        // element.scrollIntoView({ behavior: 'auto' })
-        const offset = 80;
-        const position = {
-          top: element.offsetTop - offset,
-          behavior: 'auto' // 或者 'auto'
+      setTimeout(() => {
+        const offsetTop = document.querySelector(to.hash).offsetTop - 80;
+        const fn = () => {
+          const scrollTop = document.querySelector('.middle-content-container').scrollTop;
+          const isspeed = offsetTop / 8;
+          document.querySelector('.middle-content-container').scrollTop = (scrollTop + isspeed) > offsetTop ? offsetTop : (scrollTop + isspeed);
+          if (scrollTop < offsetTop) {
+            raf = requestAnimationFrame(fn);
+          } else {
+            console.log(document.querySelector('.middle-content-container').scrollTop);
+            cancelAnimationFrame(raf);
+           
+          }
         };
-        return window.scrollTo(position);
-      }
+        raf = requestAnimationFrame(fn);
+      }, 0)
     }
-    return { top: 0 };
   }
 });
 

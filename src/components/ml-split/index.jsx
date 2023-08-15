@@ -42,7 +42,8 @@ const Split = {
           <div class="split-line"></div>
         </div>
         <div class="middle-content-container">{slots.Content(props)}</div>
-        <div class="right-container"></div>
+        <div class="right-container">
+        </div>
       </div>
     );
   },
