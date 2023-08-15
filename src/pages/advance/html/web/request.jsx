@@ -1,10 +1,10 @@
-const Transform= {
+const Build = {
     setup() {
         return () => (
             <div>
-                我是Transform
+                我是request
             </div>
         )
     }
 };
-export default Transform
+export default Build

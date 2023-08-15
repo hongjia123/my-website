@@ -1,10 +1,10 @@
-const Frame = {
+const Build = {
     setup() {
         return () => (
             <div>
-                我是Frame
+                我是vuecli
             </div>
         )
     }
 };
-export default Frame
+export default Build
