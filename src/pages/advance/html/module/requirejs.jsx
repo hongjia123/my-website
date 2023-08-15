@@ -1,10 +1,10 @@
-const Module = {
+const Build = {
     setup() {
         return () => (
             <div>
-                我是Module
+                我是module
             </div>
         )
     }
 };
-export default Module
+export default Build

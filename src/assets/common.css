@@ -70,6 +70,7 @@ li {
 
 pre {
   overflow: auto;
+  word-break: break-all;
 }
 
 code {
@@ -78,6 +79,7 @@ code {
   border-radius: 4px;
   color: var(--ml-c-text-code);
   transition: color .5s, background-color .5s;
+  word-break: break-all;
 }
 
 code,
@@ -86,6 +88,17 @@ pre,
 samp {
   font-family: monospace, monospace;
   font-size: 1em;
+}
+.hljs-ln-numbers {
+  text-align: right;
+  border-right: 1px solid #ccc;
+  color: #999;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 button,

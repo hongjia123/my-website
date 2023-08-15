@@ -23,14 +23,14 @@ const ParentNavpage = {
               <h3>数据请求与传输</h3>
               <ul>
                 <li><a href="#/summary/hp?id=2">HTTP数据传输原理</a></li>
-                <li><a href="#/advance/web.html#websocket">WebSocket</a></li>
+                <li><a href="#/advance/request.html#websocket">WebSocket</a></li>
               </ul>
             </div>
             <div class="api-group">
               <h3>浏览器</h3>
               <ul>
-                <li><a href="#/advance/web.html#browser">浏览器工作原理</a></li>
-                <li><a href="#/advance/web.html#js">js引擎原理</a></li>
+                <li><a href="#/advance/browser.html#browser">浏览器工作原理</a></li>
+                <li><a href="#/advance/browser.html#js">js引擎原理</a></li>
               </ul>
             </div>
           </div>
@@ -43,10 +43,10 @@ const ParentNavpage = {
               </ul>
             </div>
             <div class="api-group">
-              <h3>lint</h3>
+              <h3>代码检测</h3>
               <ul>
-                <li><a href="#/advance/transform.html#synax">词法、语法分析</a></li>
-                <li><a href="#/advance/transform.html#AST">AST</a></li>
+                <li><a href="#/advance/lint.html#synax">词法、语法分析</a></li>
+                <li><a href="#/advance/lint.html#AST">AST</a></li>
               </ul>
             </div>
           </div>
@@ -56,16 +56,16 @@ const ParentNavpage = {
             <div class="api-group">
               <h3>webpakck</h3>
               <ul>
-                <li><a href="#/advance/build.html#package">webpack打包原理</a></li>
-                <li><a href="#/advance/build.html#loader">loader</a></li>
-                <li><a href="#/advance/build.html#plugin">plugin</a></li>
-                <li><a href="#/advance/build.html#hot">热模块替换</a></li>
+                <li><a href="#/advance/webpack.html#package">webpack打包原理</a></li>
+                <li><a href="#/advance/webpack.html#loader">loader</a></li>
+                <li><a href="#/advance/webpack.html#plugin">plugin</a></li>
+                <li><a href="#/advance/webpack.html#hot">热模块替换</a></li>
               </ul>
             </div>
             <div class="api-group">
               <h3>vuecli</h3>
               <ul>
-                <li><a href="#/advance/build.html#vuecli">vuecli配置</a></li>
+                <li><a href="#/advance/vuecli.html#vuecli">vuecli配置</a></li>
               </ul>
             </div>
           </div>
@@ -75,7 +75,7 @@ const ParentNavpage = {
             <div class="api-group">
               <h3>模块原理</h3>
               <ul>
-                <li><a href="#/advance/module.html#require">require.js原理</a></li>
+                <li><a href="#/advance/requirejs.html#require">require.js原理</a></li>
               </ul>
             </div>
           </div>
@@ -85,9 +85,9 @@ const ParentNavpage = {
             <div class="api-group">
               <h3>Vue</h3>
               <ul>
-                <li><a href="#/advance/frame.html#vue">vue渲染原理</a></li>
-                <li><a href="#/advance/frame.html#template">vue模板编译原理</a></li>
-                <li><a href="#/advance/frame.html#vdom">虚拟DOM原理</a></li>
+                <li><a href="#/advance/vue.html#vue">vue渲染原理</a></li>
+                <li><a href="#/advance/vue.html#template">vue模板编译原理</a></li>
+                <li><a href="#/advance/vue.html#vdom">虚拟DOM原理</a></li>
               </ul>
             </div>
           </div>

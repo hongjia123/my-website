@@ -2,7 +2,7 @@ const Build = {
     setup() {
         return () => (
             <div>
-                我是Build
+                我是lint
             </div>
         )
     }
