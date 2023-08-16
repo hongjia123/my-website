@@ -249,13 +249,155 @@ const Build = {
                                 "\n  //",
                                 "\n}",
 
-                                "\n\n 第四步：执行`compiler` 对象的`run方法开始执行编译`",
+                                "\n\n//第四步：执行`compiler` 对象的`run方法开始执行编译`",
                                 "\n run(callback){",
                                 "\n   this.hooks.run.call(); //在编译前触发触发run钩子",
                                 "\n   const onCompiled = ()=>{",
                                 "\n     this.hooks.run.call(); //在编译前触发触发run钩子",
                                 "\n   };",
                                 "\n   this.compiler(onCompiled); //开始编译，成功之后调用onCompiled",
+                                "\n }",
+                                "\n}",
+                            ]}
+                        </code></pre>
+                    </p>
+                    <br/>
+                    <p>
+                        编译这个阶段需要单独解耦出来，通过<span><code>Compilation</code></span>来完成，定义<span><code>Compilation</code></span>大致结构：
+                    </p>
+                    <br/>
+                    <p>
+                        <pre><code>
+                        {[
+                                "class Compiler{",
+                                "\n  //省略其他",
+                                "\n run(callback){",
+                                "\n //省略",
+                                "\n }",
+                                "\n compile(callback){",
+                                "\n   let compilation = new Compilation(this.options);",
+                                "\n   compilation.build(callback); //执行compilation的build方法进行编译，编译成功之后执行回调",
+                                "\n }",
+                                "\n}",
+                                "\n\n",
+                                "class Compilation{",
+                                "\n constructor(webpackOptions){",
+                                "\n   this.options = webpackOptions;",
+                                "\n   this.modules = []; //本次编译所有生成出来的模块",
+                                "\n   this.chunks = []; //本次编译产出的所有的代码块，入口模块和依赖的模块打包一起为代码块",
+                                "\n   this.assets = []; //本次编译产出的资源文件",
+                                "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
+                                "\n }",
+                                "\n\n",
+                                "\n build(callback){",
+                                "\n  // 这里开始做编译工作，编译成功之后执行callback",
+                                "\n  callback()",
+                                "\n }",
+                                "\n}",
+                            ]}
+                        </code></pre>
+                    </p>
+                    <br/>
+                    <h4>
+                        (5) 根据配置文件中的<code>entry</code>配置项找到所有的入口
+                    </h4>
+                    <br/>
+                    <p>
+                        现在我们开始进行编译
+                    </p>
+                    <br/>
+                    <p>
+                        编译开始前，我需要先知道入口文件，而<span><code>入口的配置方式</code></span>有多种，可以是字符串，也可以是对象，这一步是统一配置信息的格式，找出
+                        所有入口(考虑多入口打包的场景)
+                    </p>
+                    <br/>
+                    <p>
+                        <pre><code>
+                        {[
+                                "class Compilation{",
+                                "\n constructor(webpackOptions){",
+                                "\n   this.options = webpackOptions;",
+                                "\n   this.modules = []; //本次编译所有生成出来的模块",
+                                "\n   this.chunks = []; //本次编译产出的所有的代码块，入口模块和依赖的模块打包一起为代码块",
+                                "\n   this.assets = []; //本次编译产出的资源文件",
+                                "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
+                                "\n }",
+                                "\n\n",
+                                "\n build(callback){",
+                                "\n  // 第五步：根据配置文件中的`entry`配置找到所有的入口",
+                                "\n  let entry = {};",
+                                "\n  if(typeof this.options.entry === 'string'){",
+                                "\n    entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
+                                "\n  }else {",
+                                "\n   entry = this.options.entry;",
+                                "\n  }",
+                                "\n\n  //编译成功执行callback",
+                                "\n  callback()",
+                                "\n }",
+                                "\n}",
+                            ]}
+                        </code></pre>
+                    </p>
+                    <br/>
+                    <h4>
+                        (6) 从入口文件出发，调用配置的<code>loader</code>规则，对各模块进行编译
+                    </h4>
+                    <br/>
+                    <p>
+                        loader 本质上就是函数，接收资源文件或者上一个loader产生的结果作为入参，最终输出转换后的结果
+                    </p>
+                    <br/>
+                    <p>
+                        写两个自定义loader配置到webpack.config.js中：
+                    </p>
+                    <br/>
+                    <p>
+                        <pre><code>
+                            {[
+                                "const loader1 = () = > {",
+                                "\n return source + '// 给你的代码加点注释：loader1';",
+                                "\n};",
+                                "\n\n",
+                                "const loader2 = () = > {",
+                                "\n return source + '// 给你的代码加点注释：loader2';",
+                                "\n};",
+                                "\n\n//webpack.config.js:",
+                                "const {loader1,loader2} = require('./webpack');",
+                                "\nmodule.exports = {",
+                                "\n modules:{",
+                                "\n  rules:[",
+                                "\n   {",
+                                "\n    test:/\.js$/",
+                                "\n    use:[loader1,loader2]",
+                                "\n   }",
+                                "\n  ]",
+                                "\n}"
+                            ]}
+                        </code></pre>
+                    </p>
+                    <br/>
+                    <p>
+                        <pre><code>
+                        {[
+                                "class Compilation{",
+                                "\n constructor(webpackOptions){",
+                                "\n   this.options = webpackOptions;",
+                                "\n   this.modules = []; //本次编译所有生成出来的模块",
+                                "\n   this.chunks = []; //本次编译产出的所有的代码块，入口模块和依赖的模块打包一起为代码块",
+                                "\n   this.assets = []; //本次编译产出的资源文件",
+                                "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
+                                "\n }",
+                                "\n\n",
+                                "\n build(callback){",
+                                "\n  // 第五步：根据配置文件中的`entry`配置找到所有的入口",
+                                "\n  let entry = {};",
+                                "\n  if(typeof this.options.entry === 'string'){",
+                                "\n    entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
+                                "\n  }else {",
+                                "\n   entry = this.options.entry;",
+                                "\n  }",
+                                "\n\n  //编译成功执行callback",
+                                "\n  callback()",
                                 "\n }",
                                 "\n}",
                             ]}
