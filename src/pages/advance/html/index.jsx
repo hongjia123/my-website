@@ -7,7 +7,6 @@ let component = {}; //当前组件对象
 let parentlist = [];
 // 获取当前激活tab的父级列表
 const useParentList = (list) => {
-    console.log(list);
     let childlist = {};
     parentlist = list.filter(i => {
         const child = i.children.find(child => child.isActive);
@@ -127,17 +126,17 @@ const SplitContainer = {
                     {
                         name: '加载器loader原理',
                         value: 'loader',
-                        content: ['package', 'loader', 'plugin', 'hot']
+                        content: ['1', '2', '3']
                     },
                     {
                         name: '插件plugin原理',
                         value: 'plugin',
-                        content: ['package', 'loader', 'plugin', 'hot']
+                        content: ['4', '5', '6']
                     },
                     {
                         name: '热模块替换原理',
                         value: 'hot',
-                        content: ['package', 'loader', 'plugin', 'hot']
+                        content: ['7', '8', '9']
                     },
                     {
                         name: 'vuecli',
@@ -184,7 +183,6 @@ const SplitContainer = {
         } else {
             const parentlist = list.filter(item => item.children.find(i => i.value == pathname[1]))[0];
             for (const list of parentlist.children) {
-                console.log(list);
                 if (list.content.includes(hash)) {
                     list.isActive = true;
                     break;
@@ -194,7 +192,6 @@ const SplitContainer = {
             }
         }
         onMounted(()=>{
-            
         })
         useParentList(list);
         return () => (
@@ -202,8 +199,9 @@ const SplitContainer = {
                 <Split
                     v-slots={{
                         Left,
-                        Content: () => <component />
+                        Content: (props) => <component/>
                     }}
+                    middleContent={{}}
                     rightContent={{}}
                     leftContent={list}
                 />

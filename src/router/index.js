@@ -81,32 +81,31 @@ const routes = pages
 //   }
 // ]
 
-console.log(routes);
 
 const router = createRouter({
   history: createWebHashHistory(),
   routes,
-  scrollBehavior(to) {
-    let raf;
-    if (to.hash) {
-      setTimeout(() => {
-        const offsetTop = document.querySelector(to.hash).offsetTop - 80;
-        const fn = () => {
-          const scrollTop = document.querySelector('.middle-content-container').scrollTop;
-          const isspeed = offsetTop / 8;
-          document.querySelector('.middle-content-container').scrollTop = (scrollTop + isspeed) > offsetTop ? offsetTop : (scrollTop + isspeed);
-          if (scrollTop < offsetTop) {
-            raf = requestAnimationFrame(fn);
-          } else {
-            console.log(document.querySelector('.middle-content-container').scrollTop);
-            cancelAnimationFrame(raf);
+  // scrollBehavior(to) {
+  //   let raf;
+  //   if (to.hash) {
+  //     setTimeout(() => {
+  //       const offsetTop = document.querySelector(to.hash).offsetTop - 80;
+  //       const fn = () => {
+  //         const scrollTop = document.querySelector('.middle-content-container').scrollTop;
+  //         const isspeed = offsetTop / 8;
+  //         document.querySelector('.middle-content-container').scrollTop = (scrollTop + isspeed) > offsetTop ? offsetTop : (scrollTop + isspeed);
+  //         if (scrollTop < offsetTop) {
+  //           raf = requestAnimationFrame(fn);
+  //         } else {
+  //           console.log(document.querySelector('.middle-content-container').scrollTop);
+  //           cancelAnimationFrame(raf);
            
-          }
-        };
-        raf = requestAnimationFrame(fn);
-      }, 0)
-    }
-  }
+  //         }
+  //       };
+  //       raf = requestAnimationFrame(fn);
+  //     }, 0)
+  //   }
+  // }
 });
 
 export default router;

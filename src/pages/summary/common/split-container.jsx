@@ -32,7 +32,7 @@ const Left = (props) => {
   );
 };
 const SplitContainer = {
-  props: ["leftContent", "rightContent", "Index"],
+  props: ["leftContent", 'rightContent',"middleContent", "Index"],
   setup(props) {
     const route = useRoute();
     onMounted(() => {
@@ -48,10 +48,10 @@ const SplitContainer = {
         v-slots={{
           Left,
           Content: (props) => {
-            return h(props.rightContent);
+            return h(props.middleContent);
           },
         }}
-        rightContent={props.rightContent[Index.value + 1]}
+        middleContent={props.middleContent[Index.value + 1]}
         leftContent={props.leftContent}
       />
     );

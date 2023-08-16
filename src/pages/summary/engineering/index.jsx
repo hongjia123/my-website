@@ -36,7 +36,7 @@ const JsAdvance = {
     const Index = ref(0);
     return () => (
       <div class="hp-container">
-        <SplitContainer leftContent={leftlist} rightContent={component} Index={Index}/>
+        <SplitContainer leftContent={leftlist} middleContent={component} Index={Index}/>
       </div>
     );
   },

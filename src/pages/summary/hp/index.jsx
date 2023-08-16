@@ -37,7 +37,7 @@ const Hp = {
 
     return () => (
       <div class="hp-container">
-        <SplitContainer leftContent={leftlist} rightContent={component} Index={Index}/>
+        <SplitContainer leftContent={leftlist} middleContent={component} Index={Index}/>
       </div> 
     );
   },

@@ -10,7 +10,6 @@ const Build = {
         const route = useRoute();
         onMounted(() => {
             hljs.highlightAll();
-            
 
         })
         return () => (
