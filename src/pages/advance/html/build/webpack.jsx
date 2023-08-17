@@ -261,14 +261,14 @@ const Build = {
                             ]}
                         </code></pre>
                     </p>
-                    <br/>
+                    <br />
                     <p>
                         编译这个阶段需要单独解耦出来，通过<span><code>Compilation</code></span>来完成，定义<span><code>Compilation</code></span>大致结构：
                     </p>
-                    <br/>
+                    <br />
                     <p>
                         <pre><code>
-                        {[
+                            {[
                                 "class Compiler{",
                                 "\n  //省略其他",
                                 "\n run(callback){",
@@ -297,60 +297,63 @@ const Build = {
                             ]}
                         </code></pre>
                     </p>
-                    <br/>
+                    <br />
                     <h4>
                         (5) 根据配置文件中的<code>entry</code>配置项找到所有的入口
                     </h4>
-                    <br/>
+                    <br />
                     <p>
                         现在我们开始进行编译
                     </p>
-                    <br/>
+                    <br />
                     <p>
                         编译开始前，我需要先知道入口文件，而<span><code>入口的配置方式</code></span>有多种，可以是字符串，也可以是对象，这一步是统一配置信息的格式，找出
                         所有入口(考虑多入口打包的场景)
                     </p>
-                    <br/>
-                    <p>
-                        <pre><code>
+                    <br />
+
+                    <br />
+                    <p><pre><code>
+
                         {[
-                                "class Compilation{",
-                                "\n constructor(webpackOptions){",
-                                "\n   this.options = webpackOptions;",
-                                "\n   this.modules = []; //本次编译所有生成出来的模块",
-                                "\n   this.chunks = []; //本次编译产出的所有的代码块，入口模块和依赖的模块打包一起为代码块",
-                                "\n   this.assets = []; //本次编译产出的资源文件",
-                                "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
-                                "\n }",
-                                "\n\n",
-                                "\n build(callback){",
-                                "\n  // 第五步：根据配置文件中的`entry`配置找到所有的入口",
-                                "\n  let entry = {};",
-                                "\n  if(typeof this.options.entry === 'string'){",
-                                "\n    entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
-                                "\n  }else {",
-                                "\n   entry = this.options.entry;",
-                                "\n  }",
-                                "\n\n  //编译成功执行callback",
-                                "\n  callback()",
-                                "\n }",
-                                "\n}",
-                            ]}
-                        </code></pre>
+                            "class Compilation{",
+                            "\n constructor(webpackOptions){",
+                            "\n   this.options = webpackOptions;",
+                            "\n   this.modules = []; //本次编译所有生成出来的模块",
+                            "\n   this.chunks = []; //本次编译产出的所有的代码块，入口模块和依赖的模块打包一起为代码块",
+                            "\n   this.assets = []; //本次编译产出的资源文件",
+                            "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
+                            "\n }",
+                            "\n\n",
+                            "\n build(callback){",
+                            "\n  // 第五步：根据配置文件中的`entry`配置找到所有的入口",
+                            "\n  let entry = {};",
+                            "\n  if(typeof this.options.entry === 'string'){",
+                            "\n    entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
+                            "\n  }else {",
+                            "\n   entry = this.options.entry;",
+                            "\n  }",
+                            "\n\n  //编译成功执行callback",
+                            "\n  callback()",
+                            "\n }",
+                            "\n}",
+                        ]}
+                    </code></pre>
+
                     </p>
-                    <br/>
+                    <br />
                     <h4>
                         (6) 从入口文件出发，调用配置的<code>loader</code>规则，对各模块进行编译
                     </h4>
-                    <br/>
+                    <br />
                     <p>
                         loader 本质上就是函数，接收资源文件或者上一个loader产生的结果作为入参，最终输出转换后的结果
                     </p>
-                    <br/>
+                    <br />
                     <p>
                         写两个自定义loader配置到webpack.config.js中：
                     </p>
-                    <br/>
+                    <br />
                     <p>
                         <pre><code>
                             {[
@@ -375,10 +378,23 @@ const Build = {
                             ]}
                         </code></pre>
                     </p>
-                    <br/>
+                    <br />
+                    <p>
+                        这一步骤将从入口文件出发，然后查找出对应的 Loader 对源代码进行翻译和替换。主要有三点
+                    </p>
+                    <br />
+                    <p>
+
+                        <label>1.入口文件的绝对路径添加到依赖数组中；</label>
+                        <label>2.得到入口模块的<span><code>module</code></span>对象；(读取模块内容，创建模块对象，对源代码进行翻译转换)</label>
+                        <label>3.将生成的入口文件<span><code>module</code></span>对象push进行this.modules中；</label>
+                    </p>
+                    <br />
                     <p>
                         <pre><code>
-                        {[
+                            {[
+                                "const baseDir = process.cwd().replace(/\/g,'/');",
+                                "\n\n",
                                 "class Compilation{",
                                 "\n constructor(webpackOptions){",
                                 "\n   this.options = webpackOptions;",
@@ -388,13 +404,51 @@ const Build = {
                                 "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
                                 "\n }",
                                 "\n\n",
-                                "\n build(callback){",
+                                "\n buildModule(){",
+                                "\n   // 读取模块内容。获取源代码",
+                                "\n   let sourceCode = fs.readFileSync(modulePath,'utf8');",
+                                "\n   // buildModule最终会返回一个modules对象，每个模块都会有一个id，id是相对于根目录的相对路径",
+                                "\n   let moduleId = './' + path.posix.relative(baseDir,modulePath); //模块id：从根目录出发，找到与该模块的相对路径(./src/index.js)",
+                                "\n   // 创建模块对象",
+                                "\n   let module = {",
+                                "\n     id: moduleId,",
+                                "\n     names: [name], //names设计成数组是因为代表的是此模块属于哪个代码块，可能属于多个代码块",
+                                "\n     dependencies: [], //它依赖的模块",
+                                "\n     _source: '', //该模块的代码信息",
+                                "\n   };",
+                                "\n   // 找到对应的`loader`对源代码进行翻译和转换",
+                                "\n   let loaders = []",
+                                "\n   let { rules = []} = this.options.module;",
+                                "\n   rules.forEach(rule=>{",
+                                "\n     let { test } = rule;",
+                                "\n     // 如果模块的路径和正则匹配，就把此规则对应的loader添加到loader数组中",
+                                "\n     if(modulePath.match(test)){",
+                                "\n       loaders.push(...rule.use)",
+                                "\n     }",
+                                "\n   });",
+                                "\n\n//自右向做左对模块进行转移",
+                                "\n sourceCode = loaders.reduceRight((code , loader) =>{",
+                                "\n   return loader(code);",
+                                "\n}, sourceCode);",
+                                "\n\n   return module;",
+                                "\n }",
+                                "\n\n build(callback){",
                                 "\n  // 第五步：根据配置文件中的`entry`配置找到所有的入口",
                                 "\n  let entry = {};",
                                 "\n  if(typeof this.options.entry === 'string'){",
-                                "\n    entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
+                                "\n  entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
                                 "\n  }else {",
-                                "\n   entry = this.options.entry;",
+                                "\n  entry = this.options.entry;",
+                                "\n  }",
+                                "\n  //第六步：从入口文件出发，调用配置的`loader`规则，对各模块进行编译",
+                                "\n  for(let entryName in entry){",
+                                "\n  let entryFilePath = path.posix.join(baseDir,entry[entryName]); ",
+                                "\n  //1. 把入口文件的绝对路径添加到以来数组中，记录此次编译依赖的模块 ",
+                                "\n  this.fileDependencies.push(entryFilePath);",
+                                "\n  //2. 得到入口模块的`module` 对象",
+                                "\n  let entryModule = this.buildModule(entryName,entryFilePath) ",
+                                "\n  //3. 将生成的入口文件`module` 对象 push 进 `this.modules`中 ",
+                                "\n  this.modules.push(entryModule);",
                                 "\n  }",
                                 "\n\n  //编译成功执行callback",
                                 "\n  callback()",
@@ -402,6 +456,246 @@ const Build = {
                                 "\n}",
                             ]}
                         </code></pre>
+                    </p>
+                    <h4>
+                        (7) 找出此模块所依赖的模块，再对依赖模块进行编译
+                    </h4>
+                    <br />
+                    <p>
+                        该步骤经过细化可以将其拆分成十个小步骤：
+
+                        <span>（7.1）：先把源代码编译成 AST</span>
+                        <span>（7.2）：在 AST 中查找 require 语句，找出依赖的模块名称和绝对路径</span>
+                        <span>（7.3）：将依赖模块的绝对路径 push 到 this.fileDependencies 中</span>
+                        <span>（7.4）：生成依赖模块的模块 id</span>
+                        <span>（7.5）：修改语法结构，把依赖的模块改为依赖模块 id</span>
+                        <span>（7.6）：将依赖模块的信息 push 到该模块的 dependencies 属性中</span>
+                        <span>（7.7）：生成新代码，并把转译后的源代码放到 module._source 属性上</span>
+                        <span>（7.8）：对依赖模块进行编译（对 module 对象中的 dependencies 进行递归执行 buildModule ）</span>
+                        <span>（7.9）：对依赖模块编译完成后得到依赖模块的 module 对象，push 到 this.modules 中</span>
+                        <span>（7.10）：等依赖模块全部编译完成后，返回入口模块的 module 对象</span>
+                    </p>
+                    <br />
+                    <p>
+                        <pre><code>
+                            {[
+
+                                "const parser = require('@babel/parser');",
+                                "\n let types = require('@babel/types'); //用来生成或者判断节点的AST语法树的节点",
+                                "\n const traverse = require('@babel/traverse').default;",
+                                "\n const generator = require('@babel/generator').default;",
+                                "\n",
+                                "\n//获取文件路径",
+                                "\n function tryExtensions(modulePath, extensions) {",
+                                "\n   if (fs.existsSync(modulePath)) {",
+                                "\n     return modulePath;",
+                                "\n   }",
+                                "\n   for (let i = 0; i < extensions?.length; i++) {",
+                                "\n     let filePath = modulePath + extensions[i];",
+                                "\n     if (fs.existsSync(filePath)) {",
+                                "\n       return filePath;",
+                                "\n     }",
+                                "\n   }",
+                                "\n   throw new Error(`无法找到${modulePath}`);",
+                                "\n }",
+                                "\n\nconst baseDir = process.cwd().replace(/\/g,'/');",
+                                "\n\n",
+                                "class Compilation{",
+                                "\n constructor(webpackOptions){",
+                                "\n   this.options = webpackOptions;",
+                                "\n   this.modules = []; //本次编译所有生成出来的模块",
+                                "\n   this.chunks = []; //本次编译产出的所有的代码块，入口模块和依赖的模块打包一起为代码块",
+                                "\n   this.assets = []; //本次编译产出的资源文件",
+                                "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
+                                "\n }",
+                                "\n\n",
+                                "\n buildModule(){",
+                                "\n  //省略其他",
+                                "\n\n//自右向做左对模块进行转移",
+                                "\n  sourceCode = loaders.reduceRight((code , loader) =>{",
+                                "\n   return loader(code);",
+                                "\n  }, sourceCode);",
+                                "\n\n//通过loader翻译后的内容一定得是js内容，因为最后得走我们babel-parse，只有js才能成编译AST",
+                                "\n  //第七步：找出此模块所依赖的模块，再对依赖模块进行编译",
+                                "\n  //7.1:先把源代码编译成 [AST](https://astexplorer.net/)",
+                                "\n   let ast = parser.parse(sourceCode, { sourceType: 'module' });",
+                                "\n    traverse(ast, {",
+                                "\n    CallExpression: (nodePath) => {",
+                                "\n    const { node } = nodePath;",
+                                "\n    //7.2在 `AST` 中查找 `require` 语句，找出依赖的模块名称和绝对路径",
+                                "\n    if (node.callee.name === 'require') {",
+                                "\n      let depModuleName = node.arguments[0].value; //获取依赖的模块",
+                                "\n      let dirname = path.posix.dirname(modulePath); //获取当前正在编译的模所在的目录",
+                                "\n      let depModulePath = path.posix.join(dirname, depModuleName); //获取依赖模块的绝对路径",
+                                "\n      let extensions = this.options.resolve?.extensions || [ '.js' ]; //获取配置中的extensions",
+                                "\n      depModulePath = tryExtensions(depModulePath, extensions); //尝试添加后缀，找到一个真实在硬盘上存在的文件",
+                                "\n      //7.3:将依赖模块的绝对路径 push 到 `this.fileDependencies` 中",
+                                "\n      this.fileDependencies.push(depModulePath);",
+                                "\n      //7.4:生成依赖模块的`模块 id`",
+                                "\n      let depModuleId = './' + path.posix.relative(baseDir, depModulePath);",
+                                "\n      //7.5:修改语法结构，把依赖的模块改为依赖`模块 id` require('./name')=>require('./src/name.js')",
+                                "\n      node.arguments = [types.stringLiteral(depModuleId)];",
+                                "\n      //7.6:将依赖模块的信息 push 到该模块的 `dependencies` 属性中",
+                                "\n      module.dependencies.push({ depModuleId, depModulePath });",
+                                "\n    }",
+                                "\n    });",
+                                "\n\n//7.7：生成新代码，并把转译后的源代码放到 `module._source` 属性上",
+                                "\n   let { code } = generator(ast);",
+                                "\n   module._source = code;",
+                                "\n   //7.8：对依赖模块进行编译（对 `module 对象`中的 `dependencies` 进行递归执行 `buildModule` ）",
+                                "\n   module.dependencies.forEach(({ depModuleId, depModulePath }) => {",
+                                "\n   //考虑到多入口打包 ：一个模块被多个其他模块引用，不需要重复打包",
+                                "\n   let existModule = this.modules.find((item) => item.id === depModuleId);",
+                                "\n   //如果modules里已经存在这个将要编译的依赖模块了，那么就不需要编译了，直接把此代码块的名称添加到对应模块的names字段里就可以",
+                                "\n   if (existModule) {",
+                                "\n     //names指的是它属于哪个代码块chunk",
+                                "\n     existModule.names.push(name);",
+                                "\n   } else {",
+                                "\n     //7.9：对依赖模块编译完成后得到依赖模块的 `module 对象`，push 到 `this.modules` 中",
+                                "\n     let depModule = this.buildModule(name, depModulePath);",
+                                "\n     this.modules.push(depModule);",
+                                "\n   }",
+                                "\n   });",
+                                "\n   //7.10：等依赖模块全部编译完成后，返回入口模块的 `module` 对象",
+                                "\n   return module;",
+                                "\n }",
+                                "\n\n build(callback){",
+                                "\n  // 第五步：根据配置文件中的`entry`配置找到所有的入口",
+                                "\n  let entry = {};",
+                                "\n  if(typeof this.options.entry === 'string'){",
+                                "\n  entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
+                                "\n  }else {",
+                                "\n  entry = this.options.entry;",
+                                "\n  }",
+                                "\n  //第六步：从入口文件出发，调用配置的`loader`规则，对各模块进行编译",
+                                "\n  for(let entryName in entry){",
+                                "\n    let entryFilePath = path.posix.join(baseDir,entry[entryName]); ",
+                                "\n    //1. 把入口文件的绝对路径添加到以来数组中，记录此次编译依赖的模块 ",
+                                "\n    this.fileDependencies.push(entryFilePath);",
+                                "\n    //2. 得到入口模块的`module` 对象",
+                                "\n    let entryModule = this.buildModule(entryName,entryFilePath) ",
+                                "\n    //3. 将生成的入口文件`module` 对象 push 进 `this.modules`中 ",
+                                "\n    this.modules.push(entryModule);",
+                                "\n  }",
+                                "\n\n  //编译成功执行callback",
+                                "\n  callback()",
+                                "\n }",
+                                "\n}",
+                            ]}
+                        </code></pre>
+                    </p>
+                    <h4>
+                        (8) 等所有模块都编译完成后，根据模块之间的依赖关系，组装代码块<code>chunk</code>
+                    </h4>
+                    <br />
+                    <p>
+                        一般来说，每个入口文件会对应一个代码块chunk，每个代码块chunk里面会放着本入口模块和它依赖的模块，这里暂时不考虑代码分割
+                    </p>
+                    <br />
+
+                    <br />
+                    <p><pre><code>
+
+                        {[
+                            "class Compilation{",
+                            "\n constructor(webpackOptions){",
+                            "\n   this.options = webpackOptions;",
+                            "\n   this.modules = []; //本次编译所有生成出来的模块",
+                            "\n   this.chunks = []; //本次编译产出的所有的代码块，入口模块和依赖的模块打包一起为代码块",
+                            "\n   this.assets = []; //本次编译产出的资源文件",
+                            "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
+                            "\n }",
+                            "\n\n",
+                            "\n build(callback){",
+                            "\n  // 第五步：根据配置文件中的`entry`配置找到所有的入口",
+                            "\n  let entry = {};",
+                            "\n  if(typeof this.options.entry === 'string'){",
+                            "\n    entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
+                            "\n  }else {",
+                            "\n   entry = this.options.entry;",
+                            "\n  }",
+                            "\n  //第六步：从入口文件出发，调用配置的`loader`规则，对各模块进行编译",
+                            "\n  for(let entryName in entry){",
+                            "\n    let entryFilePath = path.posix.join(baseDir,entry[entryName]); ",
+                            "\n    //1. 把入口文件的绝对路径添加到以来数组中，记录此次编译依赖的模块 ",
+                            "\n    this.fileDependencies.push(entryFilePath);",
+                            "\n    //2. 得到入口模块的`module` 对象",
+                            "\n    let entryModule = this.buildModule(entryName,entryFilePath) ",
+                            "\n    //3. 将生成的入口文件`module` 对象 push 进 `this.modules`中 ",
+                            "\n    this.modules.push(entryModule);",
+                            "\n    //第八步：等所有模块都编译完成后，根据模块之间的依赖关系，组装代码块 `chunk`（一般来说，每个入口文件会对应一个代码块`chunk`，每个代码块`chunk`里面会放着本入口",
+                            "模块  和它依赖的模块",
+                            "\n    let chunk = {",
+                            "\n     name: entryName, //entryName='main' 代码块的名称",
+                            "\n     entryModule, //此代码块对应的module的对象,这里就是src/index.js 的module对象",
+                            "\n     modules: this.modules.filter((item) => item.names.includes(entryName)), //找出属于该代码块的模块",
+                            "\n    }",
+                            "\n    this.chunks.push(chunk);",
+                            "\n  }",
+                            "\n\n  //编译成功执行callback",
+                            "\n  callback()",
+                            "\n }",
+                            "\n}",
+                        ]}
+                    </code></pre>
+
+                    </p>
+                    <br />
+                    <h4>
+                        (9) 把各个代码块<code>chunk</code>转换成一个一个文件加入到输出列表
+                    </h4>
+                    <br />
+                    <p>
+                        这一步需要结合配置文件中的output.filename去生成输出文件的文件名称，同时还需要生成运行时代码:
+                    </p>
+                    <br />
+
+                    <br />
+                    <p><pre><code>
+
+                        {[
+                            "class Compilation{",
+                            "\n constructor(webpackOptions){",
+                            "\n   this.options = webpackOptions;",
+                            "\n   this.modules = []; //本次编译所有生成出来的模块",
+                            "\n   this.chunks = []; //本次编译产出的所有的代码块，入口模块和依赖的模块打包一起为代码块",
+                            "\n   this.assets = []; //本次编译产出的资源文件",
+                            "\n   this.fileDependencies = []; // 本次打包涉及的文件，这里主要是为了实现watch模式下监听文件的变化，文件变化后会重新编译",
+                            "\n }",
+                            "\n\n",
+                            "\n build(callback){",
+                            "\n  // 第五步：根据配置文件中的`entry`配置找到所有的入口",
+                            "\n  let entry = {};",
+                            "\n  if(typeof this.options.entry === 'string'){",
+                            "\n    entry.main = this.options.entry; //如果是单入口，将entry:'xx'变成{main:'xx'},这里需要做兼容",
+                            "\n  }else {",
+                            "\n   entry = this.options.entry;",
+                            "\n  }",
+                            "\n  //第六步：从入口文件出发，调用配置的`loader`规则，对各模块进行编译",
+                            "\n  for(let entryName in entry){",
+                            "\n    let entryFilePath = path.posix.join(baseDir,entry[entryName]); ",
+                            "\n    //1. 把入口文件的绝对路径添加到以来数组中，记录此次编译依赖的模块 ",
+                            "\n    this.fileDependencies.push(entryFilePath);",
+                            "\n    //2. 得到入口模块的`module` 对象",
+                            "\n    let entryModule = this.buildModule(entryName,entryFilePath) ",
+                            "\n    //3. 将生成的入口文件`module` 对象 push 进 `this.modules`中 ",
+                            "\n    this.modules.push(entryModule);",
+                            "\n    //第八步：等所有模块都编译完成后，根据模块之间的依赖关系，组装代码块 `chunk`（一般来说，每个入口文件会对应一个代码块`chunk`，每个代码块`chunk`里面会放着本入口",
+                            "模块  和它依赖的模块",
+                            "\n    let chunk = {",
+                            "\n     name: entryName, //entryName='main' 代码块的名称",
+                            "\n     entryModule, //此代码块对应的module的对象,这里就是src/index.js 的module对象",
+                            "\n     modules: this.modules.filter((item) => item.names.includes(entryName)), //找出属于该代码块的模块",
+                            "\n    }",
+                            "\n    this.chunks.push(chunk);",
+                            "\n  }",
+                            "\n\n  //编译成功执行callback",
+                            "\n  callback()",
+                            "\n }",
+                            "\n}",
+                        ]}
+                    </code></pre>
+
                     </p>
                 </div>
             </div>
