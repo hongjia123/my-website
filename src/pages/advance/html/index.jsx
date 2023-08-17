@@ -1,5 +1,5 @@
 import Split from "@components/ml-split";
-import { reactive, ref, h, onMounted, defineAsyncComponent, watch } from "vue";
+import { reactive, ref, h, onMounted, defineAsyncComponent, watch, nextTick } from "vue";
 import { useRoute } from "vue-router";
 import './css/index.less';
 
@@ -13,9 +13,10 @@ const useParentList = (list) => {
         if (child) {
             childlist = child
             return child.isActive
-        }
+        };
     });
     component = setComp(parentlist[0].value, childlist.value);
+
 };
 // 设置中间内容组件
 const setComp = (parentpath, childpath) => {
@@ -167,7 +168,7 @@ const SplitContainer = {
                     }
                 ]
             }
-        ]
+        ];
         const sessionhash = sessionStorage.getItem('hash');
         const route = useRoute();
         const pathname = route.path.match(/\/advance\/(\w+)\.html/);
@@ -199,9 +200,9 @@ const SplitContainer = {
                 <Split
                     v-slots={{
                         Left,
-                        Content: (props) => <component/>
+                        Content: ({ middleContent }) => h(middleContent)
                     }}
-                    middleContent={{}}
+                    middleContent={component}
                     rightContent={{}}
                     leftContent={list}
                 />

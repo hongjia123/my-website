@@ -1,4 +1,4 @@
-import { reactive, ref, watch, onMounted } from "vue";
+import { reactive, ref, watch, onMounted, watchEffect } from "vue";
 import { useRoute } from "vue-router";
 import "./css/index.less";
 const ParentNavpage = {
@@ -133,7 +133,7 @@ const Advance = {
     const routerCallback = (newPath) => {
       const path = newPath||route.path;
       const matchPath = path.match(/(\/).*?(\/)\w+/); // 当前路由是否是子路由
-      isChildRouter.value = matchPath ? true : false
+      isChildRouter.value = matchPath ? true : false;
     }
     watch(() => route.path, routerCallback);
     onMounted(routerCallback)

@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
 import "./css/index.less";
-import { onMounted, ref, reactive, watch} from "vue";
+import { onMounted, ref, reactive, watch, nextTick, h, watchEffect, onUpdated} from "vue";
 import { useRoute } from "vue-router";
 const Split = {
   props: {
@@ -12,32 +12,35 @@ const Split = {
     const isResizing = ref(false);
     const route = useRoute();
     const state = reactive({
-      directory: []
+      directory: [],
+      middle:{},
     });
     let raf;
     let id;
+    // // 监听页面挂载完成后设置目录
+    // window.onload = window.onreadystatechange = function () {
+    //   console.log(67);
+    //   if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
+    //     console.log(44);
+    //     setDirNode();
+    //   }
+    // };
     onMounted(() => {
       const left = document.querySelector('.left-title-nav');
       const splitline = document.querySelector('.split-line');
-      const middle = document.querySelector('.middle-content-container');
+      state.middle= document.querySelector('.middle-content-container');
       const root = document.documentElement;
       root.style.setProperty('--left-width', getComputedStyle(left).width);
       splitline.addEventListener("mousedown", function ($event) {
         isResizing.value = true;
       });
-      // 监听页面挂载完成后设置目录
-      window.onload = window.onreadystatechange = function () {
-        if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-          setDirNode();
-        }
-      };
       root.addEventListener("mousemove", function (e) {
         const minClientX = e.clientX < 200 ? 200 : e.clientX;
         const maxClientX = e.clientX > 1000 ? 1000 : minClientX;
         if (isResizing.value) {
           requestAnimationFrame(() => {
-            middle.style.width = `calc(100% - ${maxClientX}px - 200px)`;
-            middle.style.cursor = "col-resize";
+            state.middle.style.width = `calc(100% - ${maxClientX}px - 200px)`;
+            state.middle.style.cursor = "col-resize";
             left.style.width = `${maxClientX}px`;
             left.style.cursor = "col-resize";
           });
@@ -45,18 +48,18 @@ const Split = {
       });
 
       root.addEventListener("mouseup", function (e) {
-        middle.style.cursor = "";
+        state.middle.style.cursor = "";
         left.style.cursor = "";
         isResizing.value = false;
       });
 
       // 
-      middle.addEventListener('scroll', function (e) {
+      state.middle.addEventListener('scroll', function (e) {
+        document.querySelector('.right-container').scrollTop = e.target.scrollTop;
       })
 
       // 滚动激活当前标题目录
-      middle.addEventListener('scroll', debounce(function (e) {
-        document.querySelector('.right-container').scrollTop = e.target.scrollTop;
+      state.middle.addEventListener('scroll', debounce(function (e) {
         for (let i = 0; i < state.directory.length; i++) {
           if (e.target.scrollTop > state.directory[i].offsetTop - 100) {
             state.directory[i].dirActive = true;
@@ -74,25 +77,22 @@ const Split = {
         if (!id || id !== state.directory.find(item => item.dirActive)?.id) {
           id = state.directory.find(item => item.dirActive)?.id;
           location.href = location.href.replace(/(\.html)(#\w+|$)$/, `$1${id ? ('#' + id) : ''}`);
-          console.log(id);
         }
       }, 50));
 
-      // 异步获取副标题元素进行目录展示
-      requestAnimationFrame(() => {
+      // 监听内容文本子节点变化动态获取本页目录
+      const observer = new MutationObserver(()=>{
         setDirNode();
       });
-    });
+      observer.observe(state.middle,{
+        childList:true
+      });
+      
+      
 
-    // 路由改变重新获取当页目录
-    watch(() => route.path, (newval, oldval) => {
-      if (/\.html/.test(newval)) {
-        setDirNode();
-      }
     });
-
     // 设置目录节点
-    const setDirNode = () => {
+    const setDirNode = (node) => {
       const dirNode = [].slice.call(document.getElementsByTagName('h3'));
       state.directory = dirNode.map(item => {
         return {
@@ -114,9 +114,12 @@ const Split = {
         }
       };
       raf = requestAnimationFrame(fn);
+    
+      
 
 
-    }
+    };
+    // setDirNode();
     return () => (
       <div class="ml-split-container">
         <div class="left-title-nav">

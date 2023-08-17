@@ -53,6 +53,7 @@ const SplitContainer = {
         }}
         middleContent={props.middleContent[Index.value + 1]}
         leftContent={props.leftContent}
+       rightContent={{}}
       />
     );
   },
