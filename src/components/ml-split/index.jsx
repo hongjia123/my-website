@@ -107,7 +107,6 @@ const Split = {
         if (currDirIndex) {
           dir[currDirIndex - 1].dirActive = false;
         }
-        currDirIndex++;
       } else {
         if (e.target.scrollTop < dir[currDirIndex].offsetTop - 100) {
           dir[currDirIndex].dirActive = false;
