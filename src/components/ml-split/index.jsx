@@ -1,6 +1,6 @@
 import { debounce } from "lodash";
 import "./css/index.less";
-import { onMounted, ref, reactive, watch, nextTick, h, watchEffect, onUpdated} from "vue";
+import { onMounted, ref, reactive, watch, nextTick, h, watchEffect, onUpdated } from "vue";
 import { useRoute } from "vue-router";
 const Split = {
   props: {
@@ -13,7 +13,7 @@ const Split = {
     const route = useRoute();
     const state = reactive({
       directory: [],
-      middle:{},
+      middle: {},
     });
     let raf;
     let id;
@@ -28,7 +28,7 @@ const Split = {
     onMounted(() => {
       const left = document.querySelector('.left-title-nav');
       const splitline = document.querySelector('.split-line');
-      state.middle= document.querySelector('.middle-content-container');
+      state.middle = document.querySelector('.middle-content-container');
       const root = document.documentElement;
       root.style.setProperty('--left-width', getComputedStyle(left).width);
       splitline.addEventListener("mousedown", function ($event) {
@@ -53,6 +53,7 @@ const Split = {
         isResizing.value = false;
       });
 
+
       // 
       state.middle.addEventListener('scroll', function (e) {
         document.querySelector('.right-container').scrollTop = e.target.scrollTop;
@@ -60,46 +61,89 @@ const Split = {
 
       // 滚动激活当前标题目录
       state.middle.addEventListener('scroll', debounce(function (e) {
-        for (let i = 0; i < state.directory.length; i++) {
-          if (e.target.scrollTop > state.directory[i].offsetTop - 100) {
-            state.directory[i].dirActive = true;
-            if (i != 0) {
-              state.directory[i - 1].dirActive = false;
-              if (i < state.directory.length - 1) {
-                state.directory[i + 1].dirActive = false;
-              }
-            }
-          }
-          if (e.target.scrollTop < state.directory[i].offsetTop - 100) {
-            state.directory[i].dirActive = false;
-          }
-        }
-        if (!id || id !== state.directory.find(item => item.dirActive)?.id) {
-          id = state.directory.find(item => item.dirActive)?.id;
-          location.href = location.href.replace(/(\.html)(#\w+|$)$/, `$1${id ? ('#' + id) : ''}`);
-        }
+        scrollDir(e, state.directory)
       }, 50));
 
+
       // 监听内容文本子节点变化动态获取本页目录
-      const observer = new MutationObserver(()=>{
+      const observer = new MutationObserver(() => {
         setDirNode();
       });
-      observer.observe(state.middle,{
-        childList:true
+      observer.observe(state.middle, {
+        childList: true
       });
-      
-      
 
     });
+    let currDirIndex = 0;
+    const scrollDir = function (e, dir) {
+      // console.log(!Array.isArray(dir));
+      // if (!Array.isArray(dir)) return
+      // for (let i = 0; i < dir.length; i++) {
+      //   if (e.target.scrollTop > dir[i].offsetTop - 100) {
+      //     dir[i].dirActive = true;
+      //     if (i != 0) {
+      //       dir[i - 1].dirActive = false;
+      //       if (i < dir.length - 1) {
+      //         dir[i + 1].dirActive = false;
+      //       }
+      //     }
+      //     dir.map(item => {
+      //       if (item.children&&item.children.length!=0) {
+      //         scrollDir(e, item.children)
+      //       }
+
+      //     })
+      //   }
+      //   if (e.target.scrollTop < dir[i].offsetTop - 100) {
+      //     dir[i].dirActive = false;
+      //   }
+      // }
+      // if (!id || id !== dir.find(item => item.dirActive)?.id) {
+      //   id = dir.find(item => item.dirActive)?.id;
+      //   location.href = location.href.replace(/(\.html)(#\w+|$)$/, `$1${id ? ('#' + id) : ''}`);
+      // }
+      if (e.target.scrollTop > dir[currDirIndex].offsetTop - 100) {
+        dir[currDirIndex].dirActive = true;
+        if (currDirIndex) {
+          dir[currDirIndex - 1].dirActive = false;
+        }
+        currDirIndex++;
+      } else {
+        if (e.target.scrollTop < dir[currDirIndex].offsetTop - 100) {
+          dir[currDirIndex].dirActive = false;
+          dir[currDirIndex - 1].dirActive = true;
+          currDirIndex--;
+        }
+      }
+
+
+
+
+
+    };
+    const setArray = (collect) => {
+      return [].slice.call(collect)
+    }
     // 设置目录节点
     const setDirNode = (node) => {
-      const dirNode = [].slice.call(document.getElementsByTagName('h3'));
+      const dirNode = setArray(document.getElementsByTagName('h3'));//一级标题node
+      const secondDir = setArray(document.getElementsByTagName('h4'));// 二级标题node
       state.directory = dirNode.map(item => {
+        const children = [];
+        setArray(item.nextSibling.childNodes).map((node, index) => {
+          if (node.nodeName == 'LI') {
+            children.push({
+              name: node.innerText,
+              offsetTop: secondDir[index].offsetTop,
+            })
+          }
+        })
         return {
           name: item.innerHTML,
           id: item.id,
           offsetTop: item.offsetTop,
-          dirActive: item.id == route.hash.replace('#', '')
+          dirActive: item.id == route.hash.replace('#', ''),
+          children,
         }
       })
       const offsetTop = route.hash && document.querySelector(route.hash).offsetTop - 80;
@@ -114,12 +158,7 @@ const Split = {
         }
       };
       raf = requestAnimationFrame(fn);
-    
-      
-
-
     };
-    // setDirNode();
     return () => (
       <div class="ml-split-container">
         <div class="left-title-nav">
@@ -133,7 +172,18 @@ const Split = {
             {
               state.directory.map(item => {
                 return (
-                  <span style={{ fontSize: '13px', margin: '2px 0', display: 'flex', alignItems: 'center' }} class={{ 'right_active': item.dirActive }}>{item.name}</span>
+                  <div >
+                    <span style={{ fontSize: '14px', margin: '2px 0' }} class={{ 'dir_active': item.dirActive }}>
+                      {item.name}
+                    </span>
+                    {
+                      item.children?.map(i => {
+                        return (
+                          <span style={{ fontSize: '12px', margin: '2px 0' }} class={{ 'second_active': i.dirActive }}>{i.name}</span>
+                        )
+                      })
+                    }
+                  </div>
 
                 )
               })
