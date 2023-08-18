@@ -62,7 +62,7 @@ const Split = {
       // 滚动激活当前标题目录
       state.middle.addEventListener('scroll', debounce(function (e) {
         scrollDir(e, state.directory)
-      }, 50));
+      }, 100));
 
 
       // 监听内容文本子节点变化动态获取本页目录
@@ -75,50 +75,63 @@ const Split = {
 
     });
     let currDirIndex = 0;
+    let secondDirIndex = 0;
     const scrollDir = function (e, dir) {
-      // console.log(!Array.isArray(dir));
-      // if (!Array.isArray(dir)) return
-      // for (let i = 0; i < dir.length; i++) {
-      //   if (e.target.scrollTop > dir[i].offsetTop - 100) {
-      //     dir[i].dirActive = true;
-      //     if (i != 0) {
-      //       dir[i - 1].dirActive = false;
-      //       if (i < dir.length - 1) {
-      //         dir[i + 1].dirActive = false;
-      //       }
-      //     }
-      //     dir.map(item => {
-      //       if (item.children&&item.children.length!=0) {
-      //         scrollDir(e, item.children)
-      //       }
-
-      //     })
-      //   }
-      //   if (e.target.scrollTop < dir[i].offsetTop - 100) {
-      //     dir[i].dirActive = false;
-      //   }
-      // }
-      // if (!id || id !== dir.find(item => item.dirActive)?.id) {
-      //   id = dir.find(item => item.dirActive)?.id;
-      //   location.href = location.href.replace(/(\.html)(#\w+|$)$/, `$1${id ? ('#' + id) : ''}`);
-      // }
-      if (e.target.scrollTop > dir[currDirIndex].offsetTop - 100) {
-        dir[currDirIndex].dirActive = true;
-        if (currDirIndex) {
+      if (!dir) return
+      if (!e.target.scrollTop) {
+        dir[currDirIndex].dirActive = false;
+      }
+      if (dir && e.target.scrollTop > dir[currDirIndex].offsetTop - 100) {
+        dir[0].dirActive = !currDirIndex;
+        scrollSecondDir(e, dir[currDirIndex].childDir);
+        if ((currDirIndex < dir.length - 1) && (e.target.scrollTop > dir[currDirIndex + 1].offsetTop - 100)) {
+          if (secondDirIndex) {
+            dir[currDirIndex].childDir[secondDirIndex].dirActive = false;
+            secondDirIndex = 0;
+          }
+          currDirIndex++;
+          dir[currDirIndex].dirActive = true;
           dir[currDirIndex - 1].dirActive = false;
+
         }
+
       } else {
-        if (e.target.scrollTop < dir[currDirIndex].offsetTop - 100) {
-          dir[currDirIndex].dirActive = false;
+        if (currDirIndex) {
+          if (dir[currDirIndex].childDir.length != 0) {
+            dir[currDirIndex].childDir[secondDirIndex].dirActive = false;
+          }
           dir[currDirIndex - 1].dirActive = true;
+          dir[currDirIndex].dirActive = false;
           currDirIndex--;
+          scrollSecondDir(e, dir[currDirIndex].childDir);
         }
       }
+      if (!id || id !== dir.find(item => item.dirActive)?.id) {
+        id = dir.find(item => item.dirActive)?.id;
+        location.href = location.href.replace(/(\.html)(#\w+|$)$/, `$1${id ? ('#' + id) : ''}`);
+      }
+    };
 
 
+    const scrollSecondDir = function (e, dir) {
+      if (dir.length == 0) return
+      if (dir && e.target.scrollTop > dir[secondDirIndex].offsetTop - 100) {
+        dir[0].dirActive = !secondDirIndex;
+        if ((secondDirIndex < dir.length - 1) && (e.target.scrollTop > dir[secondDirIndex + 1].offsetTop - 100)) {
+          secondDirIndex++;
+          dir[secondDirIndex].dirActive = true;
+          dir[secondDirIndex - 1].dirActive = false;
 
-
-
+        }
+      } else {
+        if (secondDirIndex) {
+          dir[secondDirIndex - 1].dirActive = true;
+          dir[secondDirIndex].dirActive = false;
+          secondDirIndex--;
+        } else {
+          dir[secondDirIndex].dirActive = false;
+        }
+      }
     };
     const setArray = (collect) => {
       return [].slice.call(collect)
@@ -126,23 +139,21 @@ const Split = {
     // 设置目录节点
     const setDirNode = (node) => {
       const dirNode = setArray(document.getElementsByTagName('h3'));//一级标题node
-      const secondDir = setArray(document.getElementsByTagName('h4'));// 二级标题node
       state.directory = dirNode.map(item => {
-        const children = [];
-        setArray(item.nextSibling.childNodes).map((node, index) => {
-          if (node.nodeName == 'LI') {
-            children.push({
-              name: node.innerText,
-              offsetTop: secondDir[index].offsetTop,
-            })
-          }
+        const childDir = [];
+        setArray(item.parentNode.getElementsByTagName('h4')).map((node, index) => {
+          childDir.push({
+            name: node.innerText,
+            offsetTop: node.offsetTop,
+          })
+
         })
         return {
           name: item.innerHTML,
           id: item.id,
           offsetTop: item.offsetTop,
           dirActive: item.id == route.hash.replace('#', ''),
-          children,
+          childDir: childDir || ''
         }
       })
       const offsetTop = route.hash && document.querySelector(route.hash).offsetTop - 80;
@@ -172,11 +183,11 @@ const Split = {
               state.directory.map(item => {
                 return (
                   <div >
-                    <span style={{ fontSize: '14px', margin: '2px 0' }} class={{ 'dir_active': item.dirActive }}>
+                    <span style={{ fontSize: '14px', margin: '2px 0', fontWeight: 'bold' }} class={{ 'dir_active': item.dirActive }}>
                       {item.name}
                     </span>
                     {
-                      item.children?.map(i => {
+                      item.childDir?.map(i => {
                         return (
                           <span style={{ fontSize: '12px', margin: '2px 0' }} class={{ 'second_active': i.dirActive }}>{i.name}</span>
                         )
