@@ -7,6 +7,7 @@ let component = {}; //当前组件对象
 let parentlist = [];
 // 获取当前激活tab的父级列表
 const useParentList = (list) => {
+    console.log(list);
     let childlist = {};
     parentlist = list.filter(i => {
         const child = i.children.find(child => child.isActive);

@@ -2,6 +2,7 @@ import { debounce } from "lodash";
 import "./css/index.less";
 import { onMounted, ref, reactive, watch, nextTick, h, watchEffect, onUpdated } from "vue";
 import { useRoute } from "vue-router";
+import { useDirectory } from './util.js';
 const Split = {
   props: {
     leftContent: Array,
@@ -12,18 +13,111 @@ const Split = {
     const isResizing = ref(false);
     const route = useRoute();
     const state = reactive({
-      directory: [],
-      middle: {},
+      directory: [], // 本页目录属性对象
+      middle: {}, // 内容parentNode
     });
-    let raf;
-    let id;
-    // // 监听页面挂载完成后设置目录
-    // window.onload = window.onreadystatechange = function () {
-    //   console.log(67);
-    //   if (!this.readyState || this.readyState === "loaded" || this.readyState === "complete") {
-    //     console.log(44);
-    //     setDirNode();
+
+    // let firstDir = {
+    //   currIndex: 0, //当前目录索引
+    //   // 从一级目录离开二级
+    //   leaveSecond: function (dir, index, setHash) {
+    //     if (dir[index].childDir.length != 0) {
+    //       dir[index].childDir[secondDir.currIndex].dirActive = false;
+    //     }
+    //     setHash && setHash(dir);
+    //   },
+    //   // 从一级目录进入二级
+    //   enterSecond: function (dir, index, setHash) {
+    //     if (dir[index].childDir.length != 0) {
+    //       dir[index].childDir[secondDir.currIndex].dirActive = true;
+    //     }
+    //     setHash && setHash(dir);
     //   }
+    // }; // 一级目录属性对象
+    // let secondDir = {
+    //   currIndex: 0 // 当前目录索引
+    // }; // 二级目录属性对象
+
+    // /**
+    //  * @param {Object} e 当前节点滚动属性对象
+    //  * @param {Array<Object>} dir 一级目录对象或者二级目录对象
+    //  * @param {Object} dirPropretyObj 目录属性对象
+    //  */
+    // const scrollDir = function (e, dir, dirPropretyObj) {
+    //   if (!dir || dir.length == 0) return
+    //   const { currIndex, leaveSecond, enterSecond } = dirPropretyObj;
+    //   if (!e.target.scrollTop) {
+    //     dir[currIndex].dirActive = false;
+    //   }
+    //   if (e.target.scrollTop > dir[currIndex].offsetTop - 100) {
+    //     dir[0].dirActive = !currIndex;
+    //     // 滚动到下一个目录
+    //     if ((currIndex < dir.length - 1) && (e.target.scrollTop > dir[currIndex + 1].offsetTop - 100)) {
+    //       leaveSecond && leaveSecond(dir, currIndex, setHash); // 离开二级目录
+    //       dirPropretyObj.currIndex++;
+    //       dir[currIndex + 1].dirActive = true;
+    //       dir[currIndex].dirActive = false;
+
+    //     }
+    //   } else {
+    //     if (currIndex) {
+    //       dir[currIndex - 1].dirActive = true;
+    //       dir[currIndex].dirActive = false;
+    //       dirPropretyObj.currIndex--;
+    //       enterSecond && enterSecond(dir, dirPropretyObj.currIndex,setHash);
+    //     } else {
+    //       dir[currIndex].dirActive = false;
+    //     }
+    //   }
+    //   // 开始滚动二级目录
+    //   scrollDir(e, dir[currIndex].childDir, secondDir);
+
+
+
+    // };
+    // const setHash = (dir) => {
+    //   // 设置hash
+    //   if (!id || id !== dir.find(item => item.dirActive)?.id) {
+    //     id = dir.find(item => item.dirActive)?.id;
+    //     location.href = location.href.replace(/(\.html)(#\w+|$)$/, `$1${id ? ('#' + id) : ''}`);
+    //   }
+    // }
+
+    // const setArray = (collect) => {
+    //   return [].slice.call(collect)
+    // }
+    // // 设置目录节点
+    // const setDirNode = (node) => {
+    //   const dirNode = setArray(document.getElementsByTagName('h3'));//一级标题node
+    //   state.directory = dirNode.map(item => {
+    //     const childDir = [];
+    //     setArray(item.parentNode.getElementsByTagName('h4')).map((node, index) => {
+    //       childDir.push({
+    //         name: node.innerText,
+    //         offsetTop: node.offsetTop,
+    //       })
+
+    //     })
+    //     return {
+    //       name: item.innerHTML,
+    //       id: item.id,
+    //       offsetTop: item.offsetTop,
+    //       dirActive: item.id == route.hash.replace('#', ''),
+    //       childDir: childDir || ''
+    //     }
+    //   })
+    //   const offsetTop = route.hash && document.querySelector(route.hash).offsetTop - 80;
+    //   const fn = () => {
+    //     const scrollTop = document.querySelector('.middle-content-container').scrollTop;
+    //     const isspeed = offsetTop / 8;
+    //     document.querySelector('.middle-content-container').scrollTop = (scrollTop + isspeed) > offsetTop ? offsetTop : (scrollTop + isspeed);
+    //     if (scrollTop < offsetTop) {
+    //       raf = requestAnimationFrame(fn);
+    //     } else {
+    //       cancelAnimationFrame(raf);
+    //     }
+    //   };
+    //   raf = requestAnimationFrame(fn);
     // };
     onMounted(() => {
       const left = document.querySelector('.left-title-nav');
@@ -52,123 +146,34 @@ const Split = {
         left.style.cursor = "";
         isResizing.value = false;
       });
-
-
-      // 
-      state.middle.addEventListener('scroll', function (e) {
-        document.querySelector('.right-container').scrollTop = e.target.scrollTop;
+      const SetDirectiory = useDirectory();
+      const myDir = new SetDirectiory({
+        currIndex: 0,
+        container: '.middle-content-container',
+        firstDirNode: 'h3',
+        secondDirNode: 'h4',
+        isSetHash:false
+      });
+      myDir.observe().then((res) => {
+        state.directory = myDir.directory.value;
       })
-
       // 滚动激活当前标题目录
-      state.middle.addEventListener('scroll', debounce(function (e) {
-        scrollDir(e, state.directory)
-      }, 100));
+      state.middle.addEventListener('scroll',
+        function (e) {
+          document.querySelector('.right-container').scrollTop = e.target.scrollTop;
+          myDir.scrollDir(e);
+        }
+      );
 
-
-      // 监听内容文本子节点变化动态获取本页目录
-      const observer = new MutationObserver(() => {
-        setDirNode();
-      });
-      observer.observe(state.middle, {
-        childList: true
-      });
+      // // 监听内容文本子节点变化动态获取本页目录
+      // const observer = new MutationObserver(() => {
+      //   setDirNode();
+      // });
+      // observer.observe(state.middle, {
+      //   childList: true
+      // });
 
     });
-    let currDirIndex = 0;
-    let secondDirIndex = 0;
-    const scrollDir = function (e, dir) {
-      if (!dir) return
-      if (!e.target.scrollTop) {
-        dir[currDirIndex].dirActive = false;
-      }
-      if (dir && e.target.scrollTop > dir[currDirIndex].offsetTop - 100) {
-        dir[0].dirActive = !currDirIndex;
-        scrollSecondDir(e, dir[currDirIndex].childDir);
-        if ((currDirIndex < dir.length - 1) && (e.target.scrollTop > dir[currDirIndex + 1].offsetTop - 100)) {
-          if (secondDirIndex) {
-            dir[currDirIndex].childDir[secondDirIndex].dirActive = false;
-            secondDirIndex = 0;
-          }
-          currDirIndex++;
-          dir[currDirIndex].dirActive = true;
-          dir[currDirIndex - 1].dirActive = false;
-
-        }
-
-      } else {
-        if (currDirIndex) {
-          if (dir[currDirIndex].childDir.length != 0) {
-            dir[currDirIndex].childDir[secondDirIndex].dirActive = false;
-          }
-          dir[currDirIndex - 1].dirActive = true;
-          dir[currDirIndex].dirActive = false;
-          currDirIndex--;
-          scrollSecondDir(e, dir[currDirIndex].childDir);
-        }
-      }
-      if (!id || id !== dir.find(item => item.dirActive)?.id) {
-        id = dir.find(item => item.dirActive)?.id;
-        location.href = location.href.replace(/(\.html)(#\w+|$)$/, `$1${id ? ('#' + id) : ''}`);
-      }
-    };
-
-
-    const scrollSecondDir = function (e, dir) {
-      if (dir.length == 0) return
-      if (dir && e.target.scrollTop > dir[secondDirIndex].offsetTop - 100) {
-        dir[0].dirActive = !secondDirIndex;
-        if ((secondDirIndex < dir.length - 1) && (e.target.scrollTop > dir[secondDirIndex + 1].offsetTop - 100)) {
-          secondDirIndex++;
-          dir[secondDirIndex].dirActive = true;
-          dir[secondDirIndex - 1].dirActive = false;
-
-        }
-      } else {
-        if (secondDirIndex) {
-          dir[secondDirIndex - 1].dirActive = true;
-          dir[secondDirIndex].dirActive = false;
-          secondDirIndex--;
-        } else {
-          dir[secondDirIndex].dirActive = false;
-        }
-      }
-    };
-    const setArray = (collect) => {
-      return [].slice.call(collect)
-    }
-    // 设置目录节点
-    const setDirNode = (node) => {
-      const dirNode = setArray(document.getElementsByTagName('h3'));//一级标题node
-      state.directory = dirNode.map(item => {
-        const childDir = [];
-        setArray(item.parentNode.getElementsByTagName('h4')).map((node, index) => {
-          childDir.push({
-            name: node.innerText,
-            offsetTop: node.offsetTop,
-          })
-
-        })
-        return {
-          name: item.innerHTML,
-          id: item.id,
-          offsetTop: item.offsetTop,
-          dirActive: item.id == route.hash.replace('#', ''),
-          childDir: childDir || ''
-        }
-      })
-      const offsetTop = route.hash && document.querySelector(route.hash).offsetTop - 80;
-      const fn = () => {
-        const scrollTop = document.querySelector('.middle-content-container').scrollTop;
-        const isspeed = offsetTop / 8;
-        document.querySelector('.middle-content-container').scrollTop = (scrollTop + isspeed) > offsetTop ? offsetTop : (scrollTop + isspeed);
-        if (scrollTop < offsetTop) {
-          raf = requestAnimationFrame(fn);
-        } else {
-          cancelAnimationFrame(raf);
-        }
-      };
-      raf = requestAnimationFrame(fn);
-    };
     return () => (
       <div class="ml-split-container">
         <div class="left-title-nav">
