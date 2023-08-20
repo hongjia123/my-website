@@ -194,6 +194,7 @@ const SplitContainer = {
             }
         }
         onMounted(()=>{
+
         })
         useParentList(list);
         return () => (
