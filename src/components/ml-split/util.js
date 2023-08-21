@@ -9,15 +9,14 @@ class SetDirectory {
         // 离开二级目录
         let leaveSecond = (directory, index) => {
             if (directory[index].childDir.length != 0) {
-                directory[index].childDir[this.secondDir.currIndex].dirActive = false;
+                directory[index].childDir[this.secondDir[index].currIndex].dirActive = false;
             }
         };
         // 进入二级目录
         let enterSecond = (directory, index) => {
-            console.log(this);
-            if (directory[index].childDir.length != 0) {
-                // this.secondDir.currIndex = directory[index].childDir.length - 1;
-                directory[index].childDir[this.secondDir.currIndex].dirActive = true;
+            console.log('出一级目录了');
+            if (this.secondDir[index].currIndex&&directory[index].childDir.length != 0) {
+                directory[index].childDir[this.secondDir[index].currIndex].dirActive = true;
             }
         };
         this.isClickDir = false; // 是否点击目录
@@ -34,9 +33,11 @@ class SetDirectory {
         };
         // 二级目录属性对象
         this.secondDir = {
-            currIndex: 0, // 当前目录索引
             contentNode: '',// 二级目录对应文本元素节点
         };
+        this.dir = {
+
+        }
         this.route = useRoute();
         this.id = '';
         this.secondDir.contentNode = option.secondDirNode || '';
@@ -93,16 +94,9 @@ class SetDirectory {
         let _this = this;
         const dirNode = setArray(this.firstDir.contentNode);//一级标题node
         const directory = dirNode.map(item => {
-            item.onclick = function () {
-                console.log(333);
-                _this.scrollToHash(item.offsetTop);
-            };
             const childDir = [];
             if (this.secondDir.contentNode) {
                 setArray(item.parentNode.getElementsByTagName(this.secondDir.contentNode)).map((node, index) => {
-                    node.onclick = function () {
-
-                    };
                     childDir.push({
                         name: node.innerText,
                         offsetTop: node.offsetTop,
@@ -117,6 +111,11 @@ class SetDirectory {
                 childDir
             }
         });
+        directory.map((dir, index) => {
+            this.secondDir[index] = {
+                currIndex: dir.childDir.length != 0 ? 0 : ''
+            }
+        })
         this.isSetHash && this.scrollToHash();
         return directory
 
@@ -151,31 +150,25 @@ class SetDirectory {
             }
             if (e.target.scrollTop > dir[currIndex].offsetTop - 100) {
                 dir[0].dirActive = !currIndex;
+                // 滚动二级目录
+                dir[currIndex].childDir && this.scrollDir(e, dir[currIndex].childDir, this.secondDir[currIndex]);
                 // 滚动到下一个目录
                 if ((currIndex < dir.length - 1) && (e.target.scrollTop > dir[currIndex + 1].offsetTop - 100)) {
-                    console.log(4);
                     leaveSecond && leaveSecond(dir, currIndex); // 离开二级目录
-                    startDir.currIndex++;
                     dir[currIndex + 1].dirActive = true;
                     dir[currIndex].dirActive = false;
-                    this.setHash(dir);
+                    startDir.currIndex++;
+                    // this.setHash(dir);
                 }
             }
             if (e.target.scrollTop < dir[currIndex].offsetTop - 100) {
-                if (currIndex) {
-                    console.log(currIndex);
-                    dir[currIndex - 1].dirActive = true;
-                    dir[currIndex].dirActive = false;
-                    startDir.currIndex && startDir.currIndex--;
-                    enterSecond && enterSecond(dir, startDir.currIndex);
-                    this.setHash(dir);
-                } else {
-                    dir[currIndex].dirActive = false;
-                }
+                currIndex && (dir[currIndex - 1].dirActive = true);
+                dir[currIndex].dirActive = false;
+                startDir.currIndex && startDir.currIndex--;
+                console.log('我进入上一级目录的二级目录了');
+                enterSecond && enterSecond(dir, startDir.currIndex);
             }
-            // 滚动二级目录
-            console.log(currIndex, this.secondDir);
-            dir[currIndex].childDir && this.scrollDir(e, dir[currIndex].childDir, this.secondDir);
+            
 
         }
 
