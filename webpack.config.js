@@ -138,14 +138,14 @@ const config = {
       //     name: 'chunk-vendors/[name].[css]',
       //   },
       // }
-      // {
-      //   test: /\.(jsx|vue|js)$/,
-      //   include: [
-      //     path.resolve(__dirname, "src"), // 处理 src 目录下的文件
-      //   ],
-      //   loader: "eslint-loader",
-      //   enforce: "pre",
-      // },
+      {
+        test: /\.(jsx|vue|js)$/,
+        include: [
+          path.resolve(__dirname, "src"), // 处理 src 目录下的文件
+        ],
+        loader: "eslint-loader",
+        enforce: "pre",
+      },
     ],
   },
   cache: false,

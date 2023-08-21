@@ -23,10 +23,7 @@ const Build = {
                         <h3 id='process'>
                             打包流程
                         </h3>
-                        <ul>
-                            <li>(1)xxxxxxx1</li>
-                            <li>(2) xxxxxxx2</li>
-                        </ul>
+                        
                         <p>
                             <span>打包开始前的准备工作</span>
                             <span>打包过程中(编译阶段)</span>
