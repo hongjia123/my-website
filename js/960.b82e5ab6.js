@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkmy_website"]=self["webpackChunkmy_website"]||[]).push([[960],{2960:function(e,u,s){s.r(u);var t=s(8473);const n={setup(){return()=>(0,t.Wm)("div",null,[(0,t.Uk)("我是vuecli,我还没开始写入内容")])}};u["default"]=n}}]);
-//# sourceMappingURL=960.b82e5ab6.js.map

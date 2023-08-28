@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/chunk-e4514872.f34726cb.js","mappings":"iIAAA,MAAMA,GAAKC,EAAAA,EAAAA,aAAA,aAAAC,EAAAA,EAAAA,iBAAA,WACX,W","sources":["webpack://my-website/./src/pages/summary/vue/html4.jsx"],"sourcesContent":["const Html4 = <div>12345</div>;\nexport default Html4;\n"],"names":["Html4","_createVNode","_createTextVNode"],"sourceRoot":""}

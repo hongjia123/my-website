@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/chunk-e683867f.209c13c6.js","mappings":"iIAAA,MAAMA,GAAKC,EAAAA,EAAAA,aAAA,aAAAC,EAAAA,EAAAA,iBAAA,WACX,W","sources":["webpack://my-website/./src/pages/summary/optimization/html5.jsx"],"sourcesContent":["const Html5 = <div>12345</div>;\nexport default Html5;\n"],"names":["Html5","_createVNode","_createTextVNode"],"sourceRoot":""}

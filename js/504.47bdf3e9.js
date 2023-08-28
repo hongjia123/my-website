@@ -1,2 +1,0 @@
-"use strict";(self["webpackChunkmy_website"]=self["webpackChunkmy_website"]||[]).push([[504],{504:function(e,s,t){t.r(s);var u=t(8473);const n={setup(){return()=>(0,u.Wm)("div",null,[(0,u.Uk)("我是request")])}};s["default"]=n}}]);
-//# sourceMappingURL=504.47bdf3e9.js.map

@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkmy_website=self.webpackChunkmy_website||[]).push([[541],{1541:function(e,t,s){s.r(t);var r=s(2173);const u={setup(){return()=>(0,r.createVNode)("div",null,[(0,r.createTextVNode)("我是transform")])}};t.default=u}}]);
+//# sourceMappingURL=chunk-d0e79d76.2d14e02c.js.map

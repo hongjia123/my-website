@@ -1,0 +1,1 @@
+{"version":3,"file":"static/js/chunk-9c1a1a2b.fd82bee6.js","mappings":"kIAAA,MAAMA,GAAKC,EAAAA,EAAAA,aAAA,aAAAC,EAAAA,EAAAA,iBAAA,OACX,W","sources":["webpack://my-website/./src/pages/summary/engineering/html2.jsx"],"sourcesContent":["const Html2 = <div>2</div>;\nexport default Html2;\n"],"names":["Html2","_createVNode","_createTextVNode"],"sourceRoot":""}
