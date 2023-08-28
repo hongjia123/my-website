@@ -187,7 +187,7 @@ class SetDirectory {
                     if (timer.value) {
                         clearTimeout(timer.value)
                     }
-                    timer = setTimeout(() => {
+                    timer.value = setTimeout(() => {
                         if (newValue == _this.container.scrollTop) { //延时执行后当newValue等于window.scrollY，代表滚动结束
                             console.log('滚动结束');
                             const parent = _this.directory.value;
