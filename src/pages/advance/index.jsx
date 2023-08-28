@@ -138,9 +138,9 @@ const Advance = {
     watch(() => route.path, routerCallback);
     onMounted(()=>{
       routerCallback;
-      window.addEventListener('hashchange',function(){
-        console.log(2222);
-      })
+      // window.addEventListener('hashchange',function(){
+      //   console.log(2222);
+      // })
     })
     return () => (
       <div>

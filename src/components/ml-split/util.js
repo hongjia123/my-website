@@ -2,7 +2,6 @@ import { debounce } from 'lodash';
 import { defineComponent, onMounted, reactive, ref, h, createApp, watch } from 'vue';
 import { useRoute } from "vue-router";
 const setArray = (collect) => {
-    console.log(collect);
     return [].slice.call(collect)
 };
 class SetDirectory {
