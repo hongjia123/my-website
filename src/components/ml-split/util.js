@@ -17,7 +17,6 @@ class SetDirectory {
         let enterSecond = (directory, index) => {
             if (this.secondDir[index].currIndex && directory[index].childDir.length != 0) {
                 directory[index].childDir[this.secondDir[index].currIndex].dirActive = true;
-                console.log(directory[index].childDir, this.secondDir);
             }
         };
         this.isClickDir = false; // 是否点击目录
@@ -123,7 +122,7 @@ class SetDirectory {
         this.isSetHash && this.scrollToHash();
         return directory
 
-    };
+    }
 
     // 监听目录文本容器内容的变化返回当前页目录
     observe() {
@@ -174,7 +173,7 @@ class SetDirectory {
 
         }
 
-    };
+    }
 
     // 渲染目录节点
     render(dir) {
@@ -189,7 +188,6 @@ class SetDirectory {
                     }
                     timer.value = setTimeout(() => {
                         if (newValue == _this.container.scrollTop) { //延时执行后当newValue等于window.scrollY，代表滚动结束
-                            console.log('滚动结束');
                             const parent = _this.directory.value;
                             parent.map((dir, i) => {
                                 if (_this.isClickDir){
@@ -230,7 +228,7 @@ class SetDirectory {
                             })
                             _this.isClickDir = false;
                         };
-                    }, 50);
+                    }, 50)
                 })
                 onMounted(async () => {
                     _this.directory.value = await _this.observe();
@@ -295,7 +293,7 @@ class SetDirectory {
         }).mount(this.el);
         return this
     }
-};
+}
 
 export const useDirectory = () => {
     return SetDirectory;
