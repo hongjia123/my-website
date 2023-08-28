@@ -1,0 +1,2 @@
+"use strict";(self["webpackChunkmy_website"]=self["webpackChunkmy_website"]||[]).push([[17],{6017:function(e,u,s){s.r(u);var t=s(8473);const n={setup(){return()=>(0,t.Wm)("div",null,[(0,t.Uk)("我是vue")])}};u["default"]=n}}]);
+//# sourceMappingURL=17.5b1d2c19.js.map

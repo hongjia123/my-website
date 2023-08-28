@@ -1,0 +1,1 @@
+{"version":3,"file":"js/618.22a6191b.js","mappings":"wIAAA,MAAMA,GAAKC,EAAAA,EAAAA,IAAA,aAAAC,EAAAA,EAAAA,IAAA,WACX,c","sources":["webpack://my-website/./src/pages/summary/engineering/html5.jsx"],"sourcesContent":["const Html5 = <div>12345</div>;\nexport default Html5;\n"],"names":["Html5","_createVNode","_createTextVNode"],"sourceRoot":""}

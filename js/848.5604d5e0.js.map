@@ -1,0 +1,1 @@
+{"version":3,"file":"js/848.5604d5e0.js","mappings":"wIAAA,MAAMA,GAAKC,EAAAA,EAAAA,IAAA,aAAAC,EAAAA,EAAAA,IAAA,WACX,c","sources":["webpack://my-website/./src/pages/summary/vue/html4.jsx"],"sourcesContent":["const Html4 = <div>12345</div>;\nexport default Html4;\n"],"names":["Html4","_createVNode","_createTextVNode"],"sourceRoot":""}

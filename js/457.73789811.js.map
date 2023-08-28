@@ -1,0 +1,1 @@
+{"version":3,"file":"js/457.73789811.js","mappings":"wIAAA,MAAMA,GAAKC,EAAAA,EAAAA,IAAA,aAAAC,EAAAA,EAAAA,IAAA,QACX,c","sources":["webpack://my-website/./src/pages/summary/modularity/html1.jsx"],"sourcesContent":["const Html1 = <div> 1</div>;\nexport default Html1;\n"],"names":["Html1","_createVNode","_createTextVNode"],"sourceRoot":""}

@@ -1,0 +1,1 @@
+{"version":3,"file":"js/804.4e2eee50.js","mappings":"wIAAA,MAAMA,GAAKC,EAAAA,EAAAA,IAAA,aAAAC,EAAAA,EAAAA,IAAA,WACX,c","sources":["webpack://my-website/./src/pages/summary/optimization/html3.jsx"],"sourcesContent":["const Html3 = <div>12345</div>;\nexport default Html3;\n"],"names":["Html3","_createVNode","_createTextVNode"],"sourceRoot":""}

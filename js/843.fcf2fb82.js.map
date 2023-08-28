@@ -1,0 +1,1 @@
+{"version":3,"file":"js/843.fcf2fb82.js","mappings":"wIAAA,MAAMA,GAAKC,EAAAA,EAAAA,IAAA,aAAAC,EAAAA,EAAAA,IAAA,OACX,c","sources":["webpack://my-website/./src/pages/summary/optimization/html2.jsx"],"sourcesContent":["const Html2 = <div>2</div>;\nexport default Html2;\n"],"names":["Html2","_createVNode","_createTextVNode"],"sourceRoot":""}

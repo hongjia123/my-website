@@ -1,0 +1,1 @@
+{"version":3,"file":"js/793.566b3313.js","mappings":"uIAAA,MAAMA,GAAKC,EAAAA,EAAAA,IAAA,aAAAC,EAAAA,EAAAA,IAAA,WACX,c","sources":["webpack://my-website/./src/pages/summary/vue/html5.jsx"],"sourcesContent":["const Html5 = <div>12345</div>;\nexport default Html5;\n"],"names":["Html5","_createVNode","_createTextVNode"],"sourceRoot":""}
