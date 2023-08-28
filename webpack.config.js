@@ -157,7 +157,7 @@ const config = {
       __VUE_PROD_DEVTOOLS__: JSON.stringify(false)
 
     }),
-    // 解析vue单位件组件插件
+    // 解析vue单文件组件插件
     new VueLoaderPlugin(),
 
     // 提取css样为单独文件

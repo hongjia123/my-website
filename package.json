@@ -12,12 +12,9 @@
     "help": "webpack --help"
   },
   "dependencies": {
-    "babel-plugin-prismjs": "^2.1.0",
     "element-plus": "^2.3.8",
     "highlight.js": "^11.8.0",
-    "highlightjs-line-numbers.js": "^2.8.0",
     "lodash": "^4.17.21",
-    "prismjs": "^1.29.0",
     "vue": "^3.2.13",
     "vue-router": "^4.0.3",
     "webpack-merge": "^5.9.0"

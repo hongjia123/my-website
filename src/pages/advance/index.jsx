@@ -136,7 +136,12 @@ const Advance = {
       isChildRouter.value = matchPath ? true : false;
     }
     watch(() => route.path, routerCallback);
-    onMounted(routerCallback)
+    onMounted(()=>{
+      routerCallback;
+      window.addEventListener('hashchange',function(){
+        console.log(2222);
+      })
+    })
     return () => (
       <div>
         {isChildRouter.value ? <ChildPage /> : <ParentNavpage />}
