@@ -6,7 +6,7 @@ const Index = ref(0);
 const Left = (props) => {
   const clickItem = (list) => {
     Index.value = list.id - 1;
-  }
+  };
   return (
     <div>
       <br />
@@ -32,7 +32,7 @@ const Left = (props) => {
   );
 };
 const SplitContainer = {
-  props: ["leftContent", 'rightContent',"middleContent", "Index"],
+  props: ["leftContent", "rightContent", "middleContent", "Index"],
   setup(props) {
     const route = useRoute();
     onMounted(() => {
@@ -53,7 +53,7 @@ const SplitContainer = {
         }}
         middleContent={props.middleContent[Index.value + 1]}
         leftContent={props.leftContent}
-       rightContent={{}}
+        rightContent={{}}
       />
     );
   },

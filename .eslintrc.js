@@ -22,7 +22,7 @@ module.exports = {
     "vue/multi-word-component-names": "off",
     "no-unused-vars": "off",
     // 单引号警告
-    quotes: ["warn", "single"],
+    quotes: ["warn", "double"],
     // 	要求 switch 语句中有 default 分支
     "default-case": "error",
     // 要求使用 ===

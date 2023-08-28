@@ -1,10 +1,6 @@
 const Build = {
-    setup() {
-        return () => (
-            <div>
-                我是module
-            </div>
-        )
-    }
+  setup() {
+    return () => <div>我是module</div>;
+  },
 };
-export default Build
+export default Build;

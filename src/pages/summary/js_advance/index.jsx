@@ -1,5 +1,5 @@
 import SplitContainer from "../common/split-container";
-import { onMounted, defineAsyncComponent,ref } from "vue";
+import { onMounted, defineAsyncComponent, ref } from "vue";
 
 const JsAdvance = {
   setup() {
@@ -18,8 +18,8 @@ const JsAdvance = {
         name: "3. this、js原型、js类型",
       },
       {
-        id:4,
-        name:"4. js代理"
+        id: 4,
+        name: "4. js代理",
       },
       {
         id: 5,
@@ -36,7 +36,11 @@ const JsAdvance = {
     const Index = ref(0);
     return () => (
       <div class="hp-container">
-        <SplitContainer leftContent={leftlist} middleContent={component} Index={Index}/>
+        <SplitContainer
+          leftContent={leftlist}
+          middleContent={component}
+          Index={Index}
+        />
       </div>
     );
   },

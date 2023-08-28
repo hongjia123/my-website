@@ -1,5 +1,5 @@
 export default {
-    title: "原理",
-    keepAlive: false,
-    order: 0,
+  title: "原理",
+  keepAlive: false,
+  order: 0,
 };

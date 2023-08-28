@@ -5,7 +5,7 @@ const chalk = require("chalk");
 const gzipSize = require("gzip-size");
 const { exec } = require("node:child_process");
 const isProduction = process.env.NODE_ENV === "production";
-const webpack = require('webpack');
+const webpack = require("webpack");
 
 // 格式化文件大小
 const formatSize = (size) => {
@@ -70,13 +70,13 @@ class RenderBuildInfoPlugin {
     }
     console.log(
       "\n" +
-      "\xa0\xa0" +
-      chalk.blue.bold("File") +
-      this.tabstr +
-      chalk.blue.bold("Size") +
-      "\t\t" +
-      chalk.blue.bold("Gzipped") +
-      "\n"
+        "\xa0\xa0" +
+        chalk.blue.bold("File") +
+        this.tabstr +
+        chalk.blue.bold("Size") +
+        "\t\t" +
+        chalk.blue.bold("Gzipped") +
+        "\n"
     );
   }
   // 读取文件夹
@@ -131,18 +131,16 @@ class RenderBuildInfoPlugin {
           if (this.filePathReadCount === this.filePathArr.length) {
             console.log(
               "\n" +
-              chalk.bgGreen(" DONE ") +
-              " Build complete. The " +
-              chalk.blue("dist") +
-              " directory is ready to be deployed\n"
+                chalk.bgGreen(" DONE ") +
+                " Build complete. The " +
+                chalk.blue("dist") +
+                " directory is ready to be deployed\n"
             );
           }
         }
-       
       } catch (error) {
         this.readdir(filePath);
       }
-      
     });
   }
 }
@@ -165,13 +163,13 @@ class RenderServerInfoPlugin {
           );
           console.log(
             "- Network:  " +
-            chalk.blue("http://" + networkAddress + ":" + this.port + "/\n")
+              chalk.blue("http://" + networkAddress + ":" + this.port + "/\n")
           );
           console.log("Note that the development build is not optimized");
           console.log(
             "To create a production build, run " +
-            chalk.blue("npm run build") +
-            "\n"
+              chalk.blue("npm run build") +
+              "\n"
           );
         } else {
           this.spinner.succeed("Building successfully\n");

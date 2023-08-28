@@ -1,10 +1,6 @@
 const Build = {
-    setup() {
-        return () => (
-            <div>
-                我是vue
-            </div>
-        )
-    }
+  setup() {
+    return () => <div>我是vue</div>;
+  },
 };
-export default Build
+export default Build;

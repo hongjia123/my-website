@@ -154,8 +154,7 @@ const config = {
     new webpack.DefinePlugin({
       // 被浏览器环境所识别
       processArgv: JSON.stringify(process.argv),
-      __VUE_PROD_DEVTOOLS__: JSON.stringify(false)
-
+      __VUE_PROD_DEVTOOLS__: JSON.stringify(false),
     }),
     // 解析vue单文件组件插件
     new VueLoaderPlugin(),
@@ -210,18 +209,18 @@ module.exports = function () {
       // },
       concatenateModules: true,
       splitChunks: {
-        chunks: 'all',
+        chunks: "all",
         minSize: 30000,
         minChunks: 1,
         maxAsyncRequests: 6,
         maxInitialRequests: 4,
-        automaticNameDelimiter: '-',
+        automaticNameDelimiter: "-",
         enforceSizeThreshold: 50000,
         cacheGroups: {
           commons: {
             name: "chunk-vendors",
-            test:/[\\/]src[\\/]/,
-            chunks:"initial",
+            test: /[\\/]src[\\/]/,
+            chunks: "initial",
             minChunks: 1,
             reuseExistingChunk: true,
             // enforce:true
@@ -234,7 +233,7 @@ module.exports = function () {
           },
           styles: {
             test: /\.less$/,
-            chunks: 'async',
+            chunks: "async",
             minSize: 1000,
             enforce: true,
           },

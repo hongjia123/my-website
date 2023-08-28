@@ -1,10 +1,6 @@
 const Build = {
-    setup() {
-        return () => (
-            <div>
-                我是lint
-            </div>
-        )
-    }
+  setup() {
+    return () => <div>我是lint</div>;
+  },
 };
-export default Build
+export default Build;

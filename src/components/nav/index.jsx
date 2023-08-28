@@ -102,12 +102,12 @@ const NavBar = {
         const path = newPath.match(/(?<=\/).*?(\/)\w+$/);
         if (path) {
           const parentlist = navlist.find(
-            (ele) => ele.path === ("#/" + path[0].split("/")[0])
+            (ele) => ele.path === "#/" + path[0].split("/")[0]
           );
           const childlist = parentlist.children.find(
             (ele) => ele.path === path[0].split("/")[1]
           );
-          if(childlist){
+          if (childlist) {
             parentlist.name = childlist.name;
             setChildrenStyle({ childlist, parentlist, type: "child" });
           }

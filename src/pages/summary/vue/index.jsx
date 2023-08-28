@@ -1,5 +1,5 @@
 import SplitContainer from "../common/split-container";
-import { onMounted, defineAsyncComponent ,ref} from "vue";
+import { onMounted, defineAsyncComponent, ref } from "vue";
 
 const VueFrame = {
   setup() {
@@ -36,7 +36,11 @@ const VueFrame = {
     const Index = ref(0);
     return () => (
       <div class="hp-container">
-        <SplitContainer leftContent={leftlist} middleContent={component} Index={Index} />
+        <SplitContainer
+          leftContent={leftlist}
+          middleContent={component}
+          Index={Index}
+        />
       </div>
     );
   },

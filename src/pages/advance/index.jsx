@@ -9,11 +9,7 @@ const ParentNavpage = {
           <span class="advance_title">进阶原理</span>
           <div class="api-filter">
             <label for="api-filter">过滤</label>
-            <input
-              type="search"
-              placeholder="Enter keyword"
-              id="api-filter"
-            />
+            <input type="search" placeholder="Enter keyword" id="api-filter" />
           </div>
         </header>
         <section className="section">
@@ -22,15 +18,23 @@ const ParentNavpage = {
             <div class="api-group">
               <h3>数据请求与传输</h3>
               <ul>
-                <li><a href="#/summary/hp?id=2">HTTP数据传输原理</a></li>
-                <li><a href="#/advance/request.html#websocket">WebSocket</a></li>
+                <li>
+                  <a href="#/summary/hp?id=2">HTTP数据传输原理</a>
+                </li>
+                <li>
+                  <a href="#/advance/request.html#websocket">WebSocket</a>
+                </li>
               </ul>
             </div>
             <div class="api-group">
               <h3>浏览器</h3>
               <ul>
-                <li><a href="#/advance/browser.html#browser">浏览器工作原理</a></li>
-                <li><a href="#/advance/browser.html#js">js引擎原理</a></li>
+                <li>
+                  <a href="#/advance/browser.html#browser">浏览器工作原理</a>
+                </li>
+                <li>
+                  <a href="#/advance/browser.html#js">js引擎原理</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -39,14 +43,20 @@ const ParentNavpage = {
             <div class="api-group">
               <h3>代码编译</h3>
               <ul>
-                <li><a href="#/advance/transform.html#babel">babel工作原理</a></li>
+                <li>
+                  <a href="#/advance/transform.html#babel">babel工作原理</a>
+                </li>
               </ul>
             </div>
             <div class="api-group">
               <h3>代码检测</h3>
               <ul>
-                <li><a href="#/advance/lint.html#synax">词法、语法分析</a></li>
-                <li><a href="#/advance/lint.html#AST">AST</a></li>
+                <li>
+                  <a href="#/advance/lint.html#synax">词法、语法分析</a>
+                </li>
+                <li>
+                  <a href="#/advance/lint.html#AST">AST</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -56,39 +66,65 @@ const ParentNavpage = {
             <div class="api-group">
               <h3>webpakck打包原理</h3>
               <ul>
-                <li><a href="#/advance/webpack.html#process">打包流程</a></li>
-                <li><a href="#/advance/webpack.html#stream">webpack事件流</a></li>
-                <li><a href="#/advance/webpack.html#realization">具体实现</a></li>
+                <li>
+                  <a href="#/advance/webpack.html#process">打包流程</a>
+                </li>
+                <li>
+                  <a href="#/advance/webpack.html#stream">webpack事件流</a>
+                </li>
+                <li>
+                  <a href="#/advance/webpack.html#realization">具体实现</a>
+                </li>
               </ul>
             </div>
             <div class="api-group">
               <h3>加载器loader原理</h3>
               <ul>
-                <li><a href="#/advance/loader.html#1">打包流程</a></li>
-                <li><a href="#/advance/loader.html#2">webpack事件流</a></li>
-                <li><a href="#/advance/loader.html#3">具体实现</a></li>
+                <li>
+                  <a href="#/advance/loader.html#1">打包流程</a>
+                </li>
+                <li>
+                  <a href="#/advance/loader.html#2">webpack事件流</a>
+                </li>
+                <li>
+                  <a href="#/advance/loader.html#3">具体实现</a>
+                </li>
               </ul>
             </div>
             <div class="api-group">
               <h3>插件plugin原理</h3>
               <ul>
-                <li><a href="#/advance/plugin.html#4">打包流程</a></li>
-                <li><a href="#/advance/plugin.html#5">webpack事件流</a></li>
-                <li><a href="#/advance/plugin.html#6">具体实现</a></li>
+                <li>
+                  <a href="#/advance/plugin.html#4">打包流程</a>
+                </li>
+                <li>
+                  <a href="#/advance/plugin.html#5">webpack事件流</a>
+                </li>
+                <li>
+                  <a href="#/advance/plugin.html#6">具体实现</a>
+                </li>
               </ul>
             </div>
             <div class="api-group">
               <h3>热模块替换原理</h3>
               <ul>
-                <li><a href="#/advance/hot.html#7">打包流程</a></li>
-                <li><a href="#/advance/hot.html#8">webpack事件流</a></li>
-                <li><a href="#/advance/hot.html#9">具体实现</a></li>
+                <li>
+                  <a href="#/advance/hot.html#7">打包流程</a>
+                </li>
+                <li>
+                  <a href="#/advance/hot.html#8">webpack事件流</a>
+                </li>
+                <li>
+                  <a href="#/advance/hot.html#9">具体实现</a>
+                </li>
               </ul>
             </div>
             <div class="api-group">
               <h3>vuecli</h3>
               <ul>
-                <li><a href="#/advance/vuecli.html#vuecli">vuecli配置</a></li>
+                <li>
+                  <a href="#/advance/vuecli.html#vuecli">vuecli配置</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -98,7 +134,9 @@ const ParentNavpage = {
             <div class="api-group">
               <h3>模块原理</h3>
               <ul>
-                <li><a href="#/advance/requirejs.html#require">require.js原理</a></li>
+                <li>
+                  <a href="#/advance/requirejs.html#require">require.js原理</a>
+                </li>
               </ul>
             </div>
           </div>
@@ -108,44 +146,46 @@ const ParentNavpage = {
             <div class="api-group">
               <h3>Vue</h3>
               <ul>
-                <li><a href="#/advance/vue.html#vue">vue渲染原理</a></li>
-                <li><a href="#/advance/vue.html#template">vue模板编译原理</a></li>
-                <li><a href="#/advance/vue.html#vdom">虚拟DOM原理</a></li>
+                <li>
+                  <a href="#/advance/vue.html#vue">vue渲染原理</a>
+                </li>
+                <li>
+                  <a href="#/advance/vue.html#template">vue模板编译原理</a>
+                </li>
+                <li>
+                  <a href="#/advance/vue.html#vdom">虚拟DOM原理</a>
+                </li>
               </ul>
             </div>
           </div>
         </section>
       </main>
-    )
-  }
-}
+    );
+  },
+};
 const ChildPage = {
   setup() {
-    return () => (
-      <router-view></router-view>
-    )
-  }
-}
+    return () => <router-view></router-view>;
+  },
+};
 const Advance = {
   setup(props, { attrs, emit, slots }) {
     const route = useRoute();
     const isChildRouter = ref(false);
     const routerCallback = (newPath) => {
-      const path = newPath||route.path;
+      const path = newPath || route.path;
       const matchPath = path.match(/(\/).*?(\/)\w+/); // 当前路由是否是子路由
       isChildRouter.value = matchPath ? true : false;
-    }
+    };
     watch(() => route.path, routerCallback);
-    onMounted(()=>{
+    onMounted(() => {
       routerCallback;
       // window.addEventListener('hashchange',function(){
       //   console.log(2222);
       // })
-    })
+    });
     return () => (
-      <div>
-        {isChildRouter.value ? <ChildPage /> : <ParentNavpage />}
-      </div>
+      <div>{isChildRouter.value ? <ChildPage /> : <ParentNavpage />}</div>
     );
   },
 };

@@ -1,8 +1,19 @@
 import { debounce } from "lodash";
 import "./css/index.less";
-import { onMounted, ref, reactive, watch, nextTick, h, watchEffect, onUpdated, defineComponent, shallowRef } from "vue";
+import {
+  onMounted,
+  ref,
+  reactive,
+  watch,
+  nextTick,
+  h,
+  watchEffect,
+  onUpdated,
+  defineComponent,
+  shallowRef,
+} from "vue";
 import { useRoute } from "vue-router";
-import { useDirectory } from './util.js';
+import { useDirectory } from "./util.js";
 const Split = {
   props: {
     leftContent: Array,
@@ -18,11 +29,11 @@ const Split = {
 
     const SetDirectory = useDirectory();
     onMounted(async () => {
-      const left = document.querySelector('.left-title-nav');
-      const splitline = document.querySelector('.split-line');
-      state.middle = document.querySelector('.middle-content-container');
+      const left = document.querySelector(".left-title-nav");
+      const splitline = document.querySelector(".split-line");
+      state.middle = document.querySelector(".middle-content-container");
       const root = document.documentElement;
-      root.style.setProperty('--left-width', getComputedStyle(left).width);
+      root.style.setProperty("--left-width", getComputedStyle(left).width);
       splitline.addEventListener("mousedown", function ($event) {
         isResizing.value = true;
       });
@@ -47,11 +58,11 @@ const Split = {
       // 滚动激活当前标题目录
       new SetDirectory({
         currIndex: 0,
-        el:'.right-container',
-        container: '.middle-content-container',
-        firstDirNode: 'h3',
-        secondDirNode: 'h4',
-        isSetHash: true
+        el: ".right-container",
+        container: ".middle-content-container",
+        firstDirNode: "h3",
+        secondDirNode: "h4",
+        isSetHash: true,
       }).render();
       // state.middle.addEventListener('scroll',
       //   function (e) {
@@ -69,8 +80,7 @@ const Split = {
           <div class="split-line"></div>
         </div>
         <div class="middle-content-container">{slots.Content(props)}</div>
-        <div class="right-container">
-        </div>
+        <div class="right-container"></div>
       </div>
     );
   },
