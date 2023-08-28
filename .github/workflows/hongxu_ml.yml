@@ -28,4 +28,4 @@ jobs:
           build_dir: dist
         env:
           # @see https://docs.github.com/cn/actions/reference/authentication-in-a-workflow#about-the-github_token-secret
-          GITHUB_TOKEN: ${{ secrets.my_rep_token }}
+          GITHUB_TOKEN: ${{ secrets.MY_REP_TOKEN }}
