@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHashHistory, createWebHistory } from "vue-router";
 const pages = require.context("../pages/", true, /page\.js$/);
 const modules = require.context("../pages/", true, /index\.(vue|jsx|tsx|js)/);
 
@@ -82,7 +82,7 @@ const routes = pages
 // ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
   // scrollBehavior(to) {
   //   let raf;
