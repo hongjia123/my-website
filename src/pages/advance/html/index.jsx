@@ -204,7 +204,7 @@ const SplitContainer = {
           list.isActive = true;
           break;
         }
-      };
+      }
 
     }
     useParentList(list);
