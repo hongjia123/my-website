@@ -15,10 +15,8 @@ let component = ref({}); //当前组件对象
 let parentlist = [];
 // 获取当前激活tab的父级列表
 const useParentList = (list) => {
-  console.log(list);
   let childlist = {};
   parentlist = list.filter((i) => {
-    console.log(i.children);
     const child = i.children.find((child) => child.isActive);
     if (child) {
       childlist = child;
@@ -43,7 +41,7 @@ const Left = (props) => {
       if (i.isActive) {
         item.isActive = true;
         // location.href = `/advance/${item.value}`;
-        history.replaceState(null, null, `/advance/${item.value}.html`)
+        history.replaceState(null, null, `/advance/${item.value}.html`);
         sessionStorage.setItem("hash", item.name);
         delete i.isActive;
         useParentList(leftlist);
@@ -198,21 +196,17 @@ const SplitContainer = {
         });
       });
     } else {
-      console.log(pathname);
       const parentlist = list.filter((item) =>
         item.children.find((i) => i.value == pathname[1])
       )[0];
-      console.log(parentlist);
       for (const list of parentlist.children) {
         if (list.content.includes(hash)) {
           list.isActive = true;
           break;
         }
       };
-      console.log(parentlist);
 
     }
-    onMounted(() => {});
     useParentList(list);
     return () => (
       <div class="advance">
