@@ -74,7 +74,6 @@ jobs:
       - name: 运行构建脚本
         run: 
           npm run _build
-          cp dist/index.html dist/404.html
 
       # 部署到 GitHub Pages
       - name: 部署到 GitHub Pages
