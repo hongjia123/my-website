@@ -37,7 +37,7 @@ const config = {
     filename: "static/js/[name].[contenthash:8].js",
     chunkFilename: "static/js/chunk-[chunkhash:8].[contenthash:8].js",
     path: path.resolve(__dirname, "dist"),
-    publicPath: "",
+    publicPath: "/",
   },
   resolveLoader: {
     modules: ["node_modules"],

@@ -11,20 +11,21 @@ import {
 import { useRoute } from "vue-router";
 import "./css/index.less";
 
-let component = {}; //当前组件对象
+let component = ref({}); //当前组件对象
 let parentlist = [];
 // 获取当前激活tab的父级列表
 const useParentList = (list) => {
   console.log(list);
   let childlist = {};
   parentlist = list.filter((i) => {
+    console.log(i.children);
     const child = i.children.find((child) => child.isActive);
     if (child) {
       childlist = child;
       return child.isActive;
     }
   });
-  component = setComp(parentlist[0].value, childlist.value);
+  component.value = setComp(parentlist[0].value, childlist.value);
 };
 // 设置中间内容组件
 const setComp = (parentpath, childpath) => {
@@ -41,7 +42,8 @@ const Left = (props) => {
       }
       if (i.isActive) {
         item.isActive = true;
-        location.href = `#/advance/${item.value}.html`;
+        // location.href = `/advance/${item.value}`;
+        history.replaceState(null, null, `/advance/${item.value}.html`)
         sessionStorage.setItem("hash", item.name);
         delete i.isActive;
         useParentList(leftlist);
@@ -95,6 +97,7 @@ const Left = (props) => {
 const SplitContainer = {
   props: ["leftContent", "rightContent", "Index"],
   setup(props) {
+    console.log(2121);
     const list = [
       {
         name: "网络篇",
@@ -184,7 +187,7 @@ const SplitContainer = {
     ];
     const sessionhash = sessionStorage.getItem("hash");
     const route = useRoute();
-    const pathname = route.path.match(/\/advance\/(\w+)\.html/);
+    const pathname = route.path.match(/\/advance\/(\w+)/);
     const hash = route.hash.replace("#", "");
     if (!hash) {
       list.map((item) => {
@@ -195,15 +198,19 @@ const SplitContainer = {
         });
       });
     } else {
+      console.log(pathname);
       const parentlist = list.filter((item) =>
         item.children.find((i) => i.value == pathname[1])
       )[0];
+      console.log(parentlist);
       for (const list of parentlist.children) {
         if (list.content.includes(hash)) {
           list.isActive = true;
           break;
         }
-      }
+      };
+      console.log(parentlist);
+
     }
     onMounted(() => {});
     useParentList(list);
@@ -214,7 +221,7 @@ const SplitContainer = {
             Left,
             Content: ({ middleContent }) => h(middleContent),
           }}
-          middleContent={component}
+          middleContent={component.value}
           rightContent={{}}
           leftContent={list}
         />

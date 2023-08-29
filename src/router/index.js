@@ -32,8 +32,8 @@ setChild(function (filenameArr) {
 setChild(function (filenameArr, path) {
   const moduleFileName = path.replace("index.jsx", "page.js");
   const { title, keepAlive, order } = pages(moduleFileName).default;
-  if (filenameArr[1] === "html") {
-    filenameArr[1] = ":name.html";
+  if (filenameArr[1] == 'html') {
+    filenameArr[1] = ':name'
   }
   childrenModulesList[filenameArr[0]].push({
     path: filenameArr[1],
@@ -80,7 +80,7 @@ const routes = pages
 //     components: () => import('../pages/advance/index.jsx')
 //   }
 // ]
-
+console.log(routes);
 const router = createRouter({
   history: createWebHistory(),
   routes,

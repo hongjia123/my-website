@@ -13,7 +13,7 @@ import {
   shallowRef,
 } from "vue";
 import { useRoute } from "vue-router";
-import { useDirectory } from "./util.js";
+import ScrollDir from "./util.js";
 const Split = {
   props: {
     leftContent: Array,
@@ -26,9 +26,7 @@ const Split = {
     const state = reactive({
       middle: {}, // 内容parentNode
     });
-
-    const SetDirectory = useDirectory();
-    onMounted(async () => {
+    onMounted(() => {
       const left = document.querySelector(".left-title-nav");
       const splitline = document.querySelector(".split-line");
       state.middle = document.querySelector(".middle-content-container");
@@ -55,15 +53,6 @@ const Split = {
         left.style.cursor = "";
         isResizing.value = false;
       });
-      // 滚动激活当前标题目录
-      new SetDirectory({
-        currIndex: 0,
-        el: ".right-container",
-        container: ".middle-content-container",
-        firstDirNode: "h3",
-        secondDirNode: "h4",
-        isSetHash: true,
-      }).render();
       // state.middle.addEventListener('scroll',
       //   function (e) {
       //     document.querySelector('.right-container').scrollTop = e.target.scrollTop;
@@ -80,7 +69,14 @@ const Split = {
           <div class="split-line"></div>
         </div>
         <div class="middle-content-container">{slots.Content(props)}</div>
-        <div class="right-container"></div>
+        <div class="right-container">
+          <ScrollDir
+            container='.middle-content-container'
+            firstDirNode='h3'
+            secondDirNode='h4'
+            isSetHash={false}
+          />
+        </div>
       </div>
     );
   },

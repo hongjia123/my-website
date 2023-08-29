@@ -12,11 +12,11 @@ const NavBar = {
     const navlist = reactive([
       {
         name: "Home",
-        path: "#/home",
+        path: "/home",
       },
       {
         name: "知识总结",
-        path: "#/summary",
+        path: "/summary",
         children: [
           {
             name: "网络专项",
@@ -50,19 +50,19 @@ const NavBar = {
       },
       {
         name: "技术交流",
-        path: "#/shares",
+        path: "/shares",
       },
       {
         name: "每日·壹题",
-        path: "#/daily",
+        path: "/daily",
       },
       {
         name: "进阶原理",
-        path: "#/advance",
+        path: "/advance",
       },
       {
         name: "慧思·泉涌",
-        path: "#/",
+        path: "",
       },
     ]);
     const currIndex = ref(0);
@@ -99,18 +99,20 @@ const NavBar = {
     watch(
       () => route.path,
       (newPath) => {
+        let childlist = {};
         const path = newPath.match(/(?<=\/).*?(\/)\w+$/);
         if (path) {
           const parentlist = navlist.find(
-            (ele) => ele.path === "#/" + path[0].split("/")[0]
+            (ele) => ele.path === "/" + path[0].split("/")[0]
           );
-          const childlist = parentlist.children.find(
-            (ele) => ele.path === path[0].split("/")[1]
-          );
-          if (childlist) {
+          if (parentlist.children){
+            childlist = parentlist.children.find(
+              (ele) => ele.path === path[0].split("/")[1]
+            );
             parentlist.name = childlist.name;
             setChildrenStyle({ childlist, parentlist, type: "child" });
           }
+           
         } else {
           setChildrenStyle({ type: "parent" });
         }
@@ -121,7 +123,7 @@ const NavBar = {
         currIndex.value = index;
         setChildrenStyle({ list, index, type: "parent" });
         router.push({
-          path: list.path.replace("#", ""),
+          path: list.path,
         });
       } else {
         currIndex.value = "";
@@ -130,7 +132,7 @@ const NavBar = {
     const setChildRouter = function (childlist, parentlist) {
       setChildrenStyle({ childlist, parentlist, type: "child" });
       router.push({
-        path: parentlist.path.replace("#", "") + "/" + childlist.path,
+        path: parentlist.path + "/" + childlist.path,
       });
     };
     const setChildrenStyle = (option) => {
@@ -155,7 +157,7 @@ const NavBar = {
     return () => (
       <div class="nav_container">
         <header class="navbar">
-          <a href="#/" class="nav_link">
+          <a href="" class="nav_link">
             <span class="website_name" aria-role="website_name">
               麦林前端博客
             </span>

@@ -59,9 +59,8 @@ class SetDirectory {
     this.route = useRoute();
     this.id = "";
     this.secondDir.contentNode = option.secondDirNode || "";
-    if (option.container && option.firstDirNode && option.el) {
-      this.el = option.el;
-      this.container = document.querySelector(option.container); // 目录文本容器
+    if (option.container && option.firstDirNode) {
+      this.container = option.container; // 目录文本容器
       this.firstDir.contentNode =
         document.getElementsByTagName(option.firstDirNode) || "";
     } else {
@@ -147,6 +146,7 @@ class SetDirectory {
 
   // 监听目录文本容器内容的变化返回当前页目录
   observe() {
+    this.container = document.querySelector(this.container);
     return new Promise((resolve, reject) => {
       // 监听文本容器
       const observer = new MutationObserver((result) => {
@@ -197,152 +197,140 @@ class SetDirectory {
     }
   }
 
-  // 渲染目录节点
-  render(dir) {
-    let _this = this;
-    createApp({
-      setup() {
-        const scrollTop = ref(0);
-        let timer = ref(null);
-        watch(scrollTop, (newValue, oldValue) => {
-          if (timer.value) {
-            clearTimeout(timer.value);
-          }
-          timer.value = setTimeout(() => {
-            if (newValue == _this.container.scrollTop) {
-              //延时执行后当newValue等于window.scrollY，代表滚动结束
-              const parent = _this.directory.value;
-              parent.map((dir, i) => {
-                if (_this.isClickDir) {
-                  if (newValue + 80 == dir.offsetTop) {
-                    dir.dirActive = true;
-                    i < parent.length - 1 && (parent[i + 1].dirActive = false);
+}
+const ScrollDir = {
+  props: {
+    el: String,
+    container: String,
+    firstDirNode: String,
+    secondDirNode: String,
+    isSetHash: Boolean
+  },
+  setup(props) {
+
+    const myDir = new SetDirectory({
+      container: props.container,
+      firstDirNode: props.firstDirNode,
+      secondDirNode: props.secondDirNode,
+      isSetHash: !!props.isSetHash
+    });
+    const scrollTop = ref(0);
+    let timer = ref(null);
+    watch(scrollTop, (newValue, oldValue) => {
+      if (timer.value) {
+        clearTimeout(timer.value);
+      }
+      timer.value = setTimeout(() => {
+        if (newValue == myDir.container.scrollTop) {
+          //延时执行后当newValue等于window.scrollY，代表滚动结束
+          const parent = myDir.directory.value;
+          parent.map((dir, i) => {
+            if (myDir.isClickDir) {
+              if (newValue + 80 == dir.offsetTop) {
+                dir.dirActive = true;
+                i < parent.length - 1 && (parent[i + 1].dirActive = false);
+              }
+            }
+            const child = parent[i].childDir;
+            child.forEach((item, index) => {
+              if (myDir.isClickDir) {
+                if (newValue + 80 == item.offsetTop) {
+                  item.dirActive = true;
+                  parent[i].dirActive = true;
+                  i < parent.length - 1 &&
+                    (parent[i + 1].dirActive = false);
+                } else {
+                  item.dirActive = false;
+                }
+              } else {
+                if (index != child.length - 1) {
+                  if (
+                    newValue + 80 > child[index].offsetTop &&
+                    newValue + 80 < child[index + 1].offsetTop
+                  ) {
+                    item.dirActive = true;
+                  } else {
+                    item.dirActive = false;
+                  }
+                } else {
+                  if (
+                    newValue + 80 > child[index].offsetTop &&
+                    newValue + 80 < parent[i + 1].offsetTop
+                  ) {
+                    item.dirActive = true;
+                  } else {
+                    item.dirActive = false;
                   }
                 }
-                const child = parent[i].childDir;
-                child.forEach((item, index) => {
-                  if (_this.isClickDir) {
-                    if (newValue + 80 == item.offsetTop) {
-                      item.dirActive = true;
-                      parent[i].dirActive = true;
-                      i < parent.length - 1 &&
-                        (parent[i + 1].dirActive = false);
-                    } else {
-                      item.dirActive = false;
-                    }
-                  } else {
-                    if (index != child.length - 1) {
-                      if (
-                        newValue + 80 > child[index].offsetTop &&
-                        newValue + 80 < child[index + 1].offsetTop
-                      ) {
-                        item.dirActive = true;
-                      } else {
-                        item.dirActive = false;
-                      }
-                    } else {
-                      if (
-                        newValue + 80 > child[index].offsetTop &&
-                        newValue + 80 < parent[i + 1].offsetTop
-                      ) {
-                        item.dirActive = true;
-                      } else {
-                        item.dirActive = false;
-                      }
-                    }
-                  }
-                });
-              });
-              _this.isClickDir = false;
-            }
-          }, 50);
-        });
-        onMounted(async () => {
-          _this.directory.value = await _this.observe();
-          _this.container.addEventListener("scroll", function (e) {
-            scrollTop.value = e.target.scrollTop;
-            _this.scrollDir(e);
+              }
+            });
           });
-        });
-        const clickDir = (e, currDirItem) => {
-          7;
-          _this.isClickDir = true;
-          if (currDirItem.name === e.target.innerText) {
-            _this.scrollToHash(currDirItem.offsetTop - 80);
-          }
-          // _this.isClickDir = true;
-          // if (currDirItem.name === e.target.innerText) {
-          //     _this.container.scrollTop = currDirItem.offsetTop - 90;
-          //     _this.directory.value.map((dir, i) => {
-          //         if (dir == currDirItem) {
-          //             dir.dirActive = true
-          //         } else {
-          //             dir.dirActive = false
-          //         }
-          //         dir.childDir?.map(item => {
-          //             if (item == currDirItem) {
-          //                 item.dirActive = true
-          //             } else {
-          //                 item.dirActive = false
-          //             }
-          //         })
-          //     })
-          // }
-        };
-        return () => (
-          <>
-            <h4
-              style={{
-                fontWeight: "bold",
-                fontSize: "12px",
-                marginBottom: "5px",
-              }}
-            >
-              本页目录
-            </h4>
-            <div>
-              {_this.directory.value.map((item) => {
-                return (
-                  <div>
+          myDir.isClickDir = false;
+        }
+      }, 50);
+    });
+    onMounted(async () => {
+      myDir.directory.value = await myDir.observe();
+      myDir.container.addEventListener("scroll", function (e) {
+        scrollTop.value = e.target.scrollTop;
+        myDir.scrollDir(e);
+      });
+
+    });
+    const clickDir = (e, currDirItem) => {
+      myDir.isClickDir = true;
+      if (currDirItem.name === e.target.innerText) {
+        myDir.scrollToHash(currDirItem.offsetTop - 80);
+      }
+    };
+    return () => (
+      <>
+        <h4
+          style={{
+            fontWeight: "bold",
+            fontSize: "12px",
+            marginBottom: "5px",
+          }}
+        >
+          本页目录
+        </h4>
+        <div>
+          {myDir.directory.value.map((item) => {
+            return (
+              <div>
+                <span
+                  onClick={(e) => clickDir(e, item)}
+                  style={{
+                    fontSize: "14px",
+                    margin: "2px 0",
+                    fontWeight: "bold",
+                    cursor: "pointer",
+                  }}
+                  class={{ dir_active: item.dirActive }}
+                >
+                  {item.name}
+                </span>
+                {item.childDir?.map((i) => {
+                  return (
                     <span
-                      onClick={(e) => clickDir(e, item)}
+                      onClick={(e) => clickDir(e, i)}
                       style={{
-                        fontSize: "14px",
+                        fontSize: "12px",
                         margin: "2px 0",
-                        fontWeight: "bold",
                         cursor: "pointer",
                       }}
-                      class={{ dir_active: item.dirActive }}
+                      class={{ second_active: i.dirActive }}
                     >
-                      {item.name}
+                      {i.name}
                     </span>
-                    {item.childDir?.map((i) => {
-                      return (
-                        <span
-                          onClick={(e) => clickDir(e, i)}
-                          style={{
-                            fontSize: "12px",
-                            margin: "2px 0",
-                            cursor: "pointer",
-                          }}
-                          class={{ second_active: i.dirActive }}
-                        >
-                          {i.name}
-                        </span>
-                      );
-                    })}
-                  </div>
-                );
-              })}
-            </div>
-          </>
-        );
-      },
-    }).mount(this.el);
-    return this;
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </>
+    )
   }
-}
-
-export const useDirectory = () => {
-  return SetDirectory;
 };
+export default ScrollDir
