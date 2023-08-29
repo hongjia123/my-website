@@ -169,6 +169,11 @@ const config = {
       filename: "index.html", // 输出的 HTML 文件名称
       // chunks: ["index", "vendor"],
     }),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, "src", "index.html"), // 模板 HTML 文件的路径
+      filename: "404.html", // 输出的 HTML 文件名称
+      // chunks: ["index", "vendor"],
+    }),
     // 构建进度条
     new ProgressBarWebpackPlugin({
       format:
